@@ -3,6 +3,10 @@ A graphical tool to help MK4Duo developers managing their **boards/ files**
 
 ### Made with love for the MK4Duo community, hoping it will turn out to be helpful!
 
+## System requirements
+- An updated version of Java 8 JRE or newer.
+- At least about 200 MB of RAM
+
 ## Steps to install
 - Download this repository: to run the program you only need the MK4DuoBoards.jar file.
 - Run it once and close it. It should now have created a folder inside your user directory (in Linux: /home/<USER_NAME>/.MK4DuoBoards/, in Windows: C:\\Users\<USER_NAME>\.MK4DuoBoards\).
