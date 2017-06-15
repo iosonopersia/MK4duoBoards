@@ -21,8 +21,9 @@ It's already capable of:
 - Run again the program: you should now be able to manage the MK4Duo **boards/ files** in a much simpler way!!!
 
 ## Known issues
-### On Linux
-- After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!
-
 ### On Windows
 - This program adapts its knowledge of the line separator to the one of the operating system on which it's running. Since apparently MK4Duo **boards/ files** and the config files follow the UNIX format (only \n character), using those files on Windows will result in the program unable to do its job. Please, **remember to convert those files to the Windows format (\r\n characters) before running this program!!!**
+**To apply EOL conversion, you can use Notepad++, it has a built-in function which automates the process**
+
+### On Linux
+- After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!
