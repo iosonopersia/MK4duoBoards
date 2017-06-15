@@ -5,7 +5,7 @@ A graphical tool to help MK4Duo developers managing their **boards/ files**
 
 ## System requirements
 - An updated version of Java 8 JRE or newer.
-- At least about 200 MB of RAM
+- At least about 200 MB of free RAM
 
 ## Steps to install
 - Download this repository: to run the program you only need the MK4DuoBoards.jar file.
