@@ -9,10 +9,6 @@ It's already capable of:
 
 ### Made with love for the [MK4Duo community](https://github.com/MagoKimbra/MK4duo), hoping it will turn out to be helpful!
 
-## System requirements
-- An updated version of Java 8 JRE or newer.
-- At least about 200 MB of free RAM
-
 ## Steps to install
 - Download this repository: to run the program you only need the MK4DuoBoards.jar file.
 - Run it once and close it. It should now have created a folder inside your user directory (in Linux: _/home/<USER_NAME>/.MK4DuoBoards/_, in Windows: _C://Users/<USER_NAME>/.MK4DuoBoards/_).
@@ -27,3 +23,7 @@ It's already capable of:
 
 ### On Linux
 - After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!
+
+## System requirements
+- An updated version of Java 8 JRE or newer.
+- At least about 200 MB of free RAM
