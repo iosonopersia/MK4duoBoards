@@ -1,5 +1,11 @@
 # MK4DuoBoards
-A graphical tool to help MK4Duo developers managing their **boards/ files**
+A graphical tool to help MK4Duo developers managing their **boards/ files**.
+
+It's already capable of:
+- parsing any **boards/ file**
+- saving boards data in a binary database
+- exporting boards data to the MK4Duo C++ header file format (the same format as the **boards/ files**) in a coherent style
+- looking for the presence of duplicate values for different pins of the same type (digital/analog) in the same board.
 
 ### Made with love for the [MK4Duo community](https://github.com/MagoKimbra/MK4duo), hoping it will turn out to be helpful!
 
@@ -9,7 +15,7 @@ A graphical tool to help MK4Duo developers managing their **boards/ files**
 
 ## Steps to install
 - Download this repository: to run the program you only need the MK4DuoBoards.jar file.
-- Run it once and close it. It should now have created a folder inside your user directory (in Linux: /home/<USER_NAME>/.MK4DuoBoards/, in Windows: C:\\Users\<USER_NAME>\.MK4DuoBoards\).
+- Run it once and close it. It should now have created a folder inside your user directory (in Linux: _/home/<USER_NAME>/.MK4DuoBoards/_, in Windows: _C://Users/<USER_NAME>/.MK4DuoBoards/_).
 - You need now to replace the files contained in that folder with the ones you can find in the ConfigFiles folder.
 - If you need to edit those files, please **[read this wiki page](https://github.com/iosonopersia/MK4DuoBoards/wiki/Config-files-format)** before!!!
 - Run again the program: you now should be able to manage the MK4Duo **boards/ files** in a much simpler way!!!
