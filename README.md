@@ -7,7 +7,7 @@ A graphical tool to help MK4Duo developers managing their **boards/ files**
 - Download this repository: to run the program you only need the MK4DuoBoards.jar file.
 - Run it once and close it. It should now have created a folder inside your user directory (in Linux: /home/<USER_NAME>/.MK4DuoBoards/, in Windows: C:\\Users\<USER_NAME>\.MK4DuoBoards\).
 - You need now to replace the files contained in that folder with the ones you can find in the ConfigFiles folder.
-- If you need to edit those files, please **read [this wiki page]()** before!!!
+- If you need to edit those files, please **read [this wiki page](https://github.com/iosonopersia/MK4DuoBoards/wiki/Config-files-format)** before!!!
 - Run again the program: you now should be able to manage the MK4Duo **boards/ files** in a much simpler way!!!
 
 ## Known issues
