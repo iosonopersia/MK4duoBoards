@@ -18,7 +18,7 @@ It's already capable of:
 
 ## Known issues
 ### On Windows
-- This program uses as line separator the UNIX EOL ('\n'), since apparently MK4Duo **boards/ files** and the config files follow the UNIX format (only \n character). Opening those file with Notepad on Windows, you will see that Notepad doesn't recognised the EndOfLine properly. **Please don't worry about it, the program will work as expected!**
+- This program uses as line separator the UNIX EOL ('\n'), since apparently MK4Duo **boards/ files** and the config files follow the UNIX format (only \n character). If you open config or board files with Notepad on Windows, you will see that Notepad doesn't recognise the EndOfLine properly and show them as a single-line text. **Please don't worry about it, the program will work as expected!**
 
 ### On Linux
 - After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!
