@@ -126,12 +126,12 @@ public class ConfigPersister{
 			}
 			
 			else if(numOfTokens>=Const.NUM_OF_LASTDIR_FILES_MINIMUM_TOKENS && firstToken.equals(Const.LASTDIR_FILES_TOKEN)){
-				Path lastDir= Paths.get(SecureTokenizer.readFileName(st));
+				Path lastDir= Paths.get(SecureTokenizer.readFileNameWithSpaces(st));
 				lastDirFiles= (Files.exists(lastDir) && Files.isDirectory(lastDir)) ? lastDir : Paths.get(System.getProperty("user.home"));
 			}
 			
 			else if(numOfTokens>=Const.NUM_OF_LASTDIR_DB_MINIMUM_TOKENS && firstToken.equals(Const.LASTDIR_DB_TOKEN)){
-				Path lastDir= Paths.get(SecureTokenizer.readFileName(st));
+				Path lastDir= Paths.get(SecureTokenizer.readFileNameWithSpaces(st));
 				lastDirDB= (Files.exists(lastDir) && Files.isDirectory(lastDir)) ? lastDir : Paths.get(System.getProperty("user.home"));
 			}
 		}
@@ -164,7 +164,7 @@ public class ConfigPersister{
 				firstToken= firstToken.substring(Const.START_TOKEN_PREFIX_NUM_OF_CHARS, firstToken.length());
 				
 				
-				if(firstToken==null || firstToken.equals("")){
+				if(firstToken==null || firstToken.equals(Const.EMPTY)){
 					br.close();
 					return;
 				}
@@ -234,7 +234,7 @@ public class ConfigPersister{
 			if(firstToken.startsWith(Const.START_TOKEN_PREFIX) && st.countTokens()== Const.NUM_OF_CHIP_START_TOKENS -1){
 				firstToken= firstToken.substring(Const.START_TOKEN_PREFIX_NUM_OF_CHARS, firstToken.length());
 				
-				if(firstToken==null || firstToken.equals("")){
+				if(firstToken==null || firstToken.equals(Const.EMPTY)){
 					br.close();
 					return;
 				}
@@ -248,7 +248,7 @@ public class ConfigPersister{
 				
 			}else{
 				sb.append(line);
-				sb.append(System.lineSeparator());
+				sb.append(Const.EOL);
 			}
 		}
 		checkCode= sb.toString();
@@ -291,18 +291,19 @@ public class ConfigPersister{
 		BufferedWriter writer= new BufferedWriter(w);
 		
 		writer.write(Const.LOCALE_TOKEN);
-		writer.write(" ");
+		writer.write(Const.SPACE);
 		writer.write(locale.getLanguage());
-		writer.write(" ");
+		writer.write(Const.SPACE);
 		writer.write(locale.getCountry());
-		writer.newLine();
+		writer.write(Const.EOL);
 		writer.write(Const.LASTDIR_FILES_TOKEN);
-		writer.write(" ");
+		writer.write(Const.SPACE);
 		writer.write(lastDirFiles.toAbsolutePath().toString());
-		writer.newLine();
+		writer.write(Const.EOL);
 		writer.write(Const.LASTDIR_DB_TOKEN);
-		writer.write(" ");
+		writer.write(Const.SPACE);
 		writer.write(lastDirDB.toAbsolutePath().toString());
+		writer.write(Const.EOL);
 		
 		writer.flush();
 		writer.close();

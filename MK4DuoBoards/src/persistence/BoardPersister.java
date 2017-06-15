@@ -109,7 +109,7 @@ public class BoardPersister{
 							
 						}else if(pinNameToken.equals(Const.BOARD_NAME_TOKEN)==false && pinNameToken.equals(Const.KNOWN_BOARD_TOKEN)==false){
 							//UnknownPin!!!
-							currentBoard.setUnknownPins(currentBoard.getUnknownPins()+line.trim()+System.lineSeparator());
+							currentBoard.setUnknownPins(currentBoard.getUnknownPins()+line.trim()+Const.EOL);
 						}
 					}
 				}
@@ -145,7 +145,7 @@ public class BoardPersister{
 		String line;
 		while((line=br.readLine())!=null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
 			sb.append(line);
-			sb.append(System.lineSeparator());
+			sb.append(Const.EOL);
 		}
 		currentBoard.setIfBlocks(sb.toString());
 	}
@@ -155,7 +155,7 @@ public class BoardPersister{
 		String line;
 		while((line=br.readLine())!=null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
 			sb.append(line);
-			sb.append(System.lineSeparator());
+			sb.append(Const.EOL);
 		}
 		currentBoard.setUnknownPins(sb.toString());
 		
@@ -219,7 +219,7 @@ public class BoardPersister{
 		Integer numOfIf=1, numOfEndif=0;
 		String line;
 		StringBuilder sb= new StringBuilder(lineAlreadyRead);
-		sb.append(System.lineSeparator());
+		sb.append(Const.EOL);
 		while((line=br.readLine())!=null){
 			StringTokenizer st= new StringTokenizer(line);
 			String token;
@@ -231,9 +231,9 @@ public class BoardPersister{
 				numOfEndif++;
 			}
 			sb.append(line);
-			sb.append(System.lineSeparator());
+			sb.append(Const.EOL);
 			if(numOfIf==numOfEndif){
-				sb.append(System.lineSeparator());
+				sb.append(Const.EOL);
 				board.setIfBlocks(board.getIfBlocks()+sb.toString());
 				return;
 			}
@@ -243,7 +243,7 @@ public class BoardPersister{
 	
 	private void consumeSingleLineComment(BufferedReader br, String lineAlreadyRead, Board board) throws IOException {
 		StringBuilder sb= new StringBuilder(lineAlreadyRead.trim());
-		sb.append(System.lineSeparator());
+		sb.append(Const.EOL);
 		board.setIfBlocks(board.getIfBlocks()+sb.toString());
 		return;		
 	}
@@ -252,16 +252,16 @@ public class BoardPersister{
 		String line;
 		StringBuilder sb= new StringBuilder(lineAlreadyRead);
 		if(board.getDescription() != null || board.getDescription().equals(Const.EMPTY)){
-			sb.append(System.lineSeparator());
+			sb.append(Const.EOL);
 		}
 		while((line=br.readLine())!=null){
 			sb.append(line);
-			sb.append(System.lineSeparator());
+			sb.append(Const.EOL);
 			if(line.endsWith(Const.MUL_LINES_COMM_END)){
 				if(lineAlreadyRead.startsWith(Const.DESCRIPTION_START)){
 					board.setDescription(board.getDescription()+sb.toString());
 				}else{
-					sb.append(System.lineSeparator());
+					sb.append(Const.EOL);
 					board.setIfBlocks(board.getIfBlocks()+sb.toString());
 				}
 				return;
@@ -281,18 +281,18 @@ public class BoardPersister{
 			BufferedWriter fw=new BufferedWriter(w);
 			
 			writeDescription(board, fw);
-			fw.newLine();
+			fw.write(Const.EOL);
 			writeMicrocontrollerCheckCode(board, fw);
-			fw.newLine();
+			fw.write(Const.EOL);
 			writeKnownBoardToken(fw);
-			fw.newLine();
+			fw.write(Const.EOL);
 			writeBoardNameCode(board, fw);
-			fw.newLine();
+			fw.write(Const.EOL);
 			writeEverySectionExceptForServomotors(board, fw);
 			writeServomotors(board,fw);
-			fw.newLine();
+			fw.write(Const.EOL);
 			writeUnknownPins(board, fw);
-			fw.newLine();
+			fw.write(Const.EOL);
 			writeIfBlocks(board, fw);
 			
 			fw.flush();
@@ -304,56 +304,56 @@ public class BoardPersister{
 	private void writeDescription(Board board, BufferedWriter fw) throws IOException {
 		if(board.getDescription().trim().isEmpty()==false){
 			fw.write(board.getDescription().trim());
-			fw.newLine();
+			fw.write(Const.EOL);
 		}
 	}
 	
 	private void writeKnownBoardToken(BufferedWriter fw) throws IOException  {
 		fw.write(Const.DEFINE+Const.SPACE+Const.KNOWN_BOARD_TOKEN+Const.SPACE+"1");
-		fw.newLine();
+		fw.write(Const.EOL);
 	}
 	
 	private void writeMicrocontrollerCheckCode(Board board, BufferedWriter fw) throws IOException  {
 		if(board.getMicrocontroller().getCheckCode().trim().isEmpty()==false){
 			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_CHIP_SECTION);
-			fw.newLine();
+			fw.write(Const.EOL);
 			fw.write(board.getMicrocontroller().getCheckCode().trim());
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);
-			fw.newLine();
+			fw.write(Const.EOL);
 		}
 	}
 	
 	private void writeBoardNameCode(Board board, BufferedWriter fw) throws IOException  {
 		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_BOARD_NAME_SECTION);
-		fw.newLine();
+		fw.write(Const.EOL);
 		fw.write(Const.IFNDEF+Const.SPACE+Const.BOARD_NAME_TOKEN);
-		fw.newLine();
+		fw.write(Const.EOL);
 		fw.write(Const.TAB+Const.DEFINE+Const.SPACE+Const.BOARD_NAME_TOKEN+Const.SPACE+Const.BACKSLASH+board.getName()+Const.BACKSLASH);
-		fw.newLine();
+		fw.write(Const.EOL);
 		fw.write(Const.ENDIF);
-		fw.newLine();
+		fw.write(Const.EOL);
 		fw.write(Const.MK4DUOBOARDS_SECTION_END);
-		fw.newLine();
+		fw.write(Const.EOL);
 	}
 	
 	private void writeEverySectionExceptForServomotors(Board board, BufferedWriter fw) throws IOException  {
-		fw.newLine();
+		fw.write(Const.EOL);
 		for(Section section: ConfigPersister.getKnownPins()){
 			if(section.getName().startsWith(Const.SERVOS_SECTION_START)==false){
 				fw.write(Const.MK4DUOBOARDS_SECTION_START+ section.getName());
-				fw.newLine();
+				fw.write(Const.EOL);
 				for(String pinName: section.getPins()){
 					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue());
-					fw.newLine();
+					fw.write(Const.EOL);
 				}
-				fw.newLine();
+				fw.write(Const.EOL);
 			}
 		}
 	}
 	
 	private void writeServomotors(Board board, BufferedWriter fw) throws IOException  {
 		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_SERVOMOTORS_SECTION);
-		fw.newLine();
+		fw.write(Const.EOL);
 		Integer indexOfServo= 0;
 		for(Section section: ConfigPersister.getKnownPins()){
 			if(section.getName().startsWith(Const.SERVOS_SECTION_START)){
@@ -362,12 +362,12 @@ public class BoardPersister{
 						fw.write("\t");
 					}
 					fw.write(Const.IF_NUM_SERVOS_GREATER_THAN + Const.SPACE+ indexOfServo.toString());
-					fw.newLine();
+					fw.write(Const.EOL);
 					for(int i=0; i< indexOfServo+1; ++i){
 						fw.write("\t");
 					}
 					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue());
-					fw.newLine();
+					fw.write(Const.EOL);
 					indexOfServo++;
 				}
 			}
@@ -378,31 +378,31 @@ public class BoardPersister{
 				fw.write("\t");
 			}
 			fw.write(Const.ENDIF);
-			fw.newLine();
+			fw.write(Const.EOL);
 		}
 		fw.write(Const.MK4DUOBOARDS_SECTION_END);
-		fw.newLine();
+		fw.write(Const.EOL);
 	}
 	
 	private void writeUnknownPins(Board board, BufferedWriter fw) throws IOException  {
 		if(board.getUnknownPins().trim().isEmpty()==false){
 			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_UNKNOWN_PINS_SECTION);
-			fw.newLine();
+			fw.write(Const.EOL);
 			fw.write(board.getUnknownPins().trim());
-			fw.newLine();
+			fw.write(Const.EOL);
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);
-			fw.newLine();
+			fw.write(Const.EOL);
 		}
 	}
 	
 	private void writeIfBlocks(Board board, BufferedWriter fw) throws IOException  {
 		if(board.getIfBlocks().trim().isEmpty()==false){
 			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_IF_BLOCKS_SECTION);
-			fw.newLine();
+			fw.write(Const.EOL);
 			fw.write(board.getIfBlocks().trim());
-			fw.newLine();
+			fw.write(Const.EOL);
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);
-			fw.newLine();
+			fw.write(Const.EOL);
 		}
 	}
 }

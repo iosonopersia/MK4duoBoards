@@ -42,7 +42,7 @@ public class MK4DuoBoardsApplication extends Application {
 		Scene scene = new Scene(primaryPane);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle(lang.getString("Application.TITLE.WELCOME")+" "+"MK4DuoBoards"+"!");
-		primaryStage.getIcons().addAll(new Image("MK4DuoIcon.png"));
+		primaryStage.getIcons().addAll(new Image("MK4DuoIcon_64x64.png"), new Image("MK4DuoIcon_48x48.png"), new Image("MK4DuoIcon_32x32.png"));
 		primaryStage.show();
 	}
 	

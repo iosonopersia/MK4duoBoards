@@ -5,10 +5,14 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -116,13 +120,18 @@ public class PrimaryPane extends BorderPane{
 	    editingTabs= new EditingTabPane(model, lang);
 		editingTabsListeners();
 		
+		VBox vBoxEditingTabs=new VBox();
+		vBoxEditingTabs.setSpacing(10);
+		vBoxEditingTabs.setPadding(new Insets(10, 0, 0, 0));
+		vBoxEditingTabs.setAlignment(Pos.CENTER);
+		vBoxEditingTabs.getChildren().addAll(new ImageView("MK4DuoIcon_125x125.png"), editingTabs);
 		
 		splitPane= new SplitPane();
 		splitPane.setDividerPositions(0.1);
 		
 		SplitPane.setResizableWithParent(boardList, false);
 		SplitPane.setResizableWithParent(editingTabs, true);
-		splitPane.getItems().addAll(boardList, editingTabs);
+		splitPane.getItems().addAll(boardList, vBoxEditingTabs);
 		
         
 		this.setTop(menuBar);
@@ -388,17 +397,17 @@ public class PrimaryPane extends BorderPane{
 		alert.setHeaderText(lang.getString("Info.HEADER"));
 		StringBuilder sb= new StringBuilder();
 		sb.append("MK4DuoBoards");
-		sb.append(" ");
+		sb.append(Const.SPACE);
 		sb.append(lang.getString("Info.CONTENT.WAS_MADE_BY"));
-		sb.append(" ");
+		sb.append(Const.SPACE);
 		sb.append("Simone Persiani [2017, Bologna, Italy]");
-		sb.append(" ");
+		sb.append(Const.SPACE);
 		sb.append(lang.getString("Info.CONTENT.MADE_FOR_MK4DUO_COMMUNITY"));
 		sb.append(".");
 		sb.append(System.lineSeparator());
 		sb.append(System.lineSeparator());
 		sb.append(lang.getString("Info.CONTENT.SOURCE_CODE_LOCATION"));
-		sb.append(" ");
+		sb.append(Const.SPACE);
 		sb.append("https://github.com/iosonopersia/MK4DuoBoards");
 		alert.setContentText(sb.toString());
 		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

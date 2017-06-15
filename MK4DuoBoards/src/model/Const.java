@@ -35,6 +35,7 @@ public class Const {
 								ENUM_TO_REPLACE_TOKEN= "@",
 							   
 							    //GENERAL PURPOSE
+								EOL="\n",
 							    EMPTY="",
 							    SPACE=" ",
 							    TAB="\t",

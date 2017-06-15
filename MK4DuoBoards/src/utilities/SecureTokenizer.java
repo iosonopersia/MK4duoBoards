@@ -25,13 +25,13 @@ public class SecureTokenizer {
 	
 	public static String readInlineCommentToken(StringTokenizer st){
 		try{
-			return st.nextToken(System.lineSeparator()).trim();
+			return st.nextToken().trim();
 		}catch(NoSuchElementException e){
 			return Const.EMPTY;
 		}
 	}
 
-	public static String readFileName(StringTokenizer st) {
+	public static String readFileNameWithSpaces(StringTokenizer st) {
 		StringBuilder sb=new StringBuilder();
 		while(st.hasMoreTokens()){
 			sb.append(st.nextToken());
