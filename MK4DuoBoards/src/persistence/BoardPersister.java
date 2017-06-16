@@ -44,8 +44,8 @@ public class BoardPersister{
 				
 				define= SecureTokenizer.readToken(st);
 				defineBoardNameToken= SecureTokenizer.readToken(st);
-				SecureTokenizer.readToken(st, Const.BACKSLASH);
-				boardNameToken= SecureTokenizer.readToken(st, Const.BACKSLASH);
+				SecureTokenizer.readToken(st, Const.QUOTE);
+				boardNameToken= SecureTokenizer.readToken(st, Const.QUOTE);
 				
 				if(define.equals(Const.DEFINE) && defineBoardNameToken.equals(Const.BOARD_NAME_TOKEN)){
 					boardName= boardNameToken.trim();
@@ -326,9 +326,9 @@ public class BoardPersister{
 	private void writeBoardNameCode(Board board, BufferedWriter fw) throws IOException  {
 		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_BOARD_NAME_SECTION);
 		fw.write(Const.EOL);
-		fw.write(Const.IFNDEF+Const.SPACE+Const.BOARD_NAME_TOKEN);
+		fw.write(Const.IF+Const.SPACE+Const.DISABLED+"("+Const.BOARD_NAME_TOKEN+")");
 		fw.write(Const.EOL);
-		fw.write(Const.TAB+Const.DEFINE+Const.SPACE+Const.BOARD_NAME_TOKEN+Const.SPACE+Const.BACKSLASH+board.getName()+Const.BACKSLASH);
+		fw.write(Const.TAB+Const.DEFINE+Const.SPACE+Const.BOARD_NAME_TOKEN+Const.SPACE+Const.QUOTE+board.getName()+Const.QUOTE);
 		fw.write(Const.EOL);
 		fw.write(Const.ENDIF);
 		fw.write(Const.EOL);

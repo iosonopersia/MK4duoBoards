@@ -39,13 +39,14 @@ public class Const {
 							    EMPTY="",
 							    SPACE=" ",
 							    TAB="\t",
-							    BACKSLASH= "\"",
+							    QUOTE= "\"",
 							    
 							    //C++ HEADER FILE TOKENS
 					    		DEFINE= "#define",
 								IF= "#if",
 								IFNDEF= "#ifndef",
 								ENDIF= "#endif",
+								DISABLED= "DISABLED",
 								SINGLE_LINE_COMM_START="//",
 								MUL_LINES_COMM_START= "/*",
 								MUL_LINES_COMM_END= "*/";
