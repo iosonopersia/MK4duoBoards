@@ -2,6 +2,7 @@
 A graphical tool to help MK4Duo developers managing their **boards/ files**.
 
 <img src="https://raw.githubusercontent.com/iosonopersia/MK4DuoBoards/master/MK4DuoBoards/src/MK4DuoIcon_250x250.png"/>
+
 It's already capable of:
 - parsing any **boards/ file**
 - saving boards data in a binary database
