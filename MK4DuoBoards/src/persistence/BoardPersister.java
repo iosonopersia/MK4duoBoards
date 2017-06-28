@@ -28,52 +28,31 @@ public class BoardPersister{
 		for(Path file : fileNames){
 			Board currentBoard=new Board();
 			Reader reader= new FileReader(file.toFile());
-			String line;
 			BufferedReader br=new BufferedReader(reader);
-			
-			//HERE WE RETRIEVE BOARDS METADATA
-			String boardName = Const.UNDEFINED_NAME,
-					define,
-					defineBoardNameToken,
-					boardNameToken;
-			while((line = br.readLine()) != null){
-				if(line.trim().equals(Const.EMPTY)){
-					continue;
-				}
-				StringTokenizer st= new StringTokenizer(line);
-				
-				define= SecureTokenizer.readToken(st);
-				defineBoardNameToken= SecureTokenizer.readToken(st);
-				SecureTokenizer.readToken(st, Const.QUOTE);
-				boardNameToken= SecureTokenizer.readToken(st, Const.QUOTE);
-				
-				if(define.equals(Const.DEFINE) && defineBoardNameToken.equals(Const.BOARD_NAME_TOKEN)){
-					boardName= boardNameToken.trim();
-					//When we find the first occurrence, we stop.
-					//Well,it should exist only 1 occurrence of BOARD_NAME for every board...
-					break;
-				}
-			}
-			currentBoard.nameProperty().set(boardName.trim());
-			currentBoard.fileNameProperty().set(file.getFileName().toString());
-			br.close();
-			reader= new FileReader(file.toFile());
-			br= new BufferedReader(reader);
+			currentBoard.setName(Const.UNDEFINED_NAME);
+			currentBoard.setFileName(file.getFileName().toString());
 			
 			//NOW WE RETRIEVE PIN VALUES DATA
 			String defineToken=Const.EMPTY, 
 					pinNameToken=Const.EMPTY,
 					pinValueToken=Const.EMPTY,
 					pinComment=Const.EMPTY;
-
+			
+			String line;
 			while((line = br.readLine()) != null){
 				if(line.trim().equals(Const.EMPTY)){
 					continue;
 				}
 				StringTokenizer st= new StringTokenizer(line);
 				
+				if(line.contains(Const.IFNDEF) && line.contains(Const.BOARD_NAME_TOKEN)){
+					consumeIfNDefBoardName(br, currentBoard);
+					continue;
+				}
+				
 				//With this simple check, we avoid reading pins defined in #if...#endif blocks
 				String initialToken= SecureTokenizer.readToken(st);
+				
 				if(initialToken.startsWith(Const.IF)){
 					consumeIfBlock(br, line, currentBoard);
 					recognisedPattern=true;
@@ -81,6 +60,7 @@ public class BoardPersister{
 				}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_START)){
 					String sectionName= initialToken.substring(Const.MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS, initialToken.length());
 					parseMK4DuoSection(sectionName, br, currentBoard);
+					recognisedPattern= true;
 					continue;
 				}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
 					continue;
@@ -94,7 +74,7 @@ public class BoardPersister{
 					continue;
 				}else{
 					defineToken= initialToken;
-					pinNameToken= SecureTokenizer.readToken(st);
+					pinNameToken= SecureTokenizer.readToken(st);					
 					pinValueToken= SecureTokenizer.readToken(st);
 					pinComment= SecureTokenizer.readInlineCommentToken(st);
 					
@@ -106,7 +86,6 @@ public class BoardPersister{
 							//Well,it should exist only 1 occurrence for every pin...
 							currentBoard.getPinByNameAndSection(pinNameToken, section).setValue(Integer.parseInt(pinValueToken));
 							currentBoard.getPinByNameAndSection(pinNameToken, section).setComment(pinComment);
-							
 						}else if(pinNameToken.equals(Const.BOARD_NAME_TOKEN)==false && pinNameToken.equals(Const.KNOWN_BOARD_TOKEN)==false){
 							//UnknownPin!!!
 							currentBoard.setUnknownPins(currentBoard.getUnknownPins()+line.trim()+Const.EOL);
@@ -127,7 +106,7 @@ public class BoardPersister{
 	
 	private void parseMK4DuoSection(String sectionName, BufferedReader br, Board currentBoard) throws IOException {
 		if(sectionName.equals(Const.MK4DUOBOARDS_BOARD_NAME_SECTION)){
-			ignoreSection(br);
+			consumeIfNDefBoardName(br, currentBoard);
 		}else if(sectionName.equals(Const.MK4DUOBOARDS_CHIP_SECTION)){
 			consumeChipSection(br, currentBoard);
 		}else if(sectionName.equals(Const.MK4DUOBOARDS_SERVOMOTORS_SECTION)){
@@ -189,6 +168,7 @@ public class BoardPersister{
 		String firstLine;
 		while((firstLine=br.readLine().trim())!=null){
 			if(firstLine.isEmpty()==false){
+				//We have found the first non-empty line after the SECTION_START token
 				break;
 			}
 		}
@@ -198,10 +178,9 @@ public class BoardPersister{
 				currentBoard.setMicrocontroller(chip);
 			}
 		}
-		
-		while((firstLine=br.readLine())!=null && firstLine.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
-			
-		}
+		//We've already collected the information we needed.
+		//The remaining part of this section can be safely ignored
+		ignoreSection(br);
 	}
 
 	private void ignoreSection(BufferedReader br) throws IOException {
@@ -213,7 +192,6 @@ public class BoardPersister{
 		}
 		
 	}
-
 
 	private void consumeIfBlock(BufferedReader br, String lineAlreadyRead, Board board) throws IOException {
 		Integer numOfIf=1, numOfEndif=0;
@@ -230,11 +208,33 @@ public class BoardPersister{
 			}else if(token.equals(Const.ENDIF)){
 				numOfEndif++;
 			}
+			
 			sb.append(line);
 			sb.append(Const.EOL);
 			if(numOfIf==numOfEndif){
 				sb.append(Const.EOL);
 				board.setIfBlocks(board.getIfBlocks()+sb.toString());
+				return;
+			}
+		}
+	}
+	
+	private void consumeIfNDefBoardName(BufferedReader br, Board board) throws IOException{
+		String line,
+			   defineToken= Const.EMPTY,
+			   boardNameToken= Const.EMPTY,
+			   boardNameString= Const.EMPTY;
+		while((line= br.readLine())!=null){
+			StringTokenizer st= new StringTokenizer(line);
+			defineToken= SecureTokenizer.readToken(st);
+			boardNameToken=SecureTokenizer.readToken(st);
+			
+			if(defineToken.equals(Const.DEFINE) && boardNameToken.equals(Const.BOARD_NAME_TOKEN)){
+				//We've found the BOARD_NAME token!
+				boardNameString= SecureTokenizer.readToken(st);
+				boardNameString= boardNameString.replace(Const.QUOTE, Const.EMPTY);
+				board.setName(boardNameString.trim());
+			}else if(defineToken.equals(Const.ENDIF)){
 				return;
 			}
 		}
@@ -304,7 +304,9 @@ public class BoardPersister{
 	private void writeDescription(Board board, BufferedWriter fw) throws IOException {
 		if(board.getDescription().trim().isEmpty()==false){
 			fw.write(board.getDescription().trim());
-			fw.write(Const.EOL);
+			if(board.getDescription().trim().endsWith(Const.EOL)==false){
+				fw.write(Const.EOL);
+			}
 		}
 	}
 	
@@ -318,6 +320,9 @@ public class BoardPersister{
 			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_CHIP_SECTION);
 			fw.write(Const.EOL);
 			fw.write(board.getMicrocontroller().getCheckCode().trim());
+			if(board.getMicrocontroller().getCheckCode().trim().endsWith(Const.EOL)==false){
+				fw.write(Const.EOL);
+			}
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);
 			fw.write(Const.EOL);
 		}
@@ -343,7 +348,7 @@ public class BoardPersister{
 				fw.write(Const.MK4DUOBOARDS_SECTION_START+ section.getName());
 				fw.write(Const.EOL);
 				for(String pinName: section.getPins()){
-					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue());
+					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue().toString());
 					fw.write(Const.EOL);
 				}
 				fw.write(Const.EOL);
@@ -389,7 +394,9 @@ public class BoardPersister{
 			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_UNKNOWN_PINS_SECTION);
 			fw.write(Const.EOL);
 			fw.write(board.getUnknownPins().trim());
-			fw.write(Const.EOL);
+			if(board.getUnknownPins().trim().endsWith(Const.EOL)==false){
+				fw.write(Const.EOL);
+			}
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);
 			fw.write(Const.EOL);
 		}
@@ -400,7 +407,9 @@ public class BoardPersister{
 			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_IF_BLOCKS_SECTION);
 			fw.write(Const.EOL);
 			fw.write(board.getIfBlocks().trim());
-			fw.write(Const.EOL);
+			if(board.getIfBlocks().trim().endsWith(Const.EOL)==false){
+				fw.write(Const.EOL);
+			}
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);
 			fw.write(Const.EOL);
 		}

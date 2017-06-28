@@ -379,12 +379,30 @@ public class PrimaryPane extends BorderPane{
 			} catch (IOException e1) {
 				showError(lang);
 			}
+			showDoneMessage(lang);
+		}else{
+			showAbortedOperation(lang);
 		}
+		
+	}
+	
+	private void showDoneMessage(i18n lang){
 		Alert done= new Alert(AlertType.INFORMATION);
 		done.initOwner(primaryStage);
 		done.setTitle(lang.getString("Done.TITLE"));
 		done.setHeaderText(lang.getString("Done.HEADER"));
 		done.setContentText(lang.getString("Done.CONTENT"));
+		done.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+		done.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
+		done.showAndWait();
+	}
+	
+	private void showAbortedOperation(i18n lang){
+		Alert done= new Alert(AlertType.WARNING);
+		done.initOwner(primaryStage);
+		done.setTitle(lang.getString("Aborted.TITLE"));
+		done.setHeaderText(lang.getString("Aborted.HEADER"));
+		done.setContentText(lang.getString("Aborted.CONTENT"));
 		done.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		done.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 		done.showAndWait();
