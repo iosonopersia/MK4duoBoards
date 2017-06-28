@@ -1,15 +1,15 @@
 # MK4DuoBoards
-A graphical tool to help MK4Duo developers managing their **boards/ files**.
+A graphical tool to help MK4duo developers managing their **boards/ files**.
 
 <img src="https://raw.githubusercontent.com/iosonopersia/MK4DuoBoards/master/MK4DuoBoards/src/MK4DuoIcon_250x250.png"/>
 
 It's already capable of:
 - parsing any **boards/ file**
 - saving boards data in a binary database
-- exporting boards data to the MK4Duo C++ header file format (the same format as the **boards/ files**) in a coherent style
+- exporting boards data to the MK4duo C++ header file format (the same format as the **boards/ files**) in a coherent style
 - looking for the presence of duplicate values for different pins of the same type (digital/analog) in the same board.
 
-### Made with love for the [MK4Duo community](https://github.com/MagoKimbra/MK4duo), hoping it will turn out to be helpful!
+### Made with love for the [MK4duo community](https://github.com/MagoKimbra/MK4duo), hoping it will turn out to be helpful!
 
 ## Steps to install
 - Download this repository: to run the program you only need the MK4DuoBoards.jar file.
