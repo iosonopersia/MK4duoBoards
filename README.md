@@ -4,7 +4,7 @@ A graphical tool to help MK4duo developers managing their **boards/ files**.
 <img src="https://raw.githubusercontent.com/iosonopersia/MK4DuoBoards/master/MK4DuoBoards/src/MK4DuoIcon_250x250.png"/>
 
 It's already capable of:
-- parsing any **boards/ file**
+- parsing any **MK4duo boards/ file**
 - saving boards data in a binary database
 - exporting boards data to the MK4duo C++ header file format (the same format as the **boards/ files**) in a coherent style
 - looking for the presence of duplicate values for different pins of the same type (digital/analog) in the same board.
@@ -23,8 +23,8 @@ It's already capable of:
 - This program uses as line separator the UNIX EOL ('\n'), since apparently MK4Duo **boards/ files** and the config files follow the UNIX format (only \n character). If you open config or board files with Notepad on Windows, you will see that Notepad doesn't recognise the EndOfLine properly and show them as a single-line text. **Please don't worry about it, the program will work as expected!**
 
 ### On Linux
-- After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!
+- ~~After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!~~ **This issue now seems to be solved. Please tell me in case you experience it!**
 
 ## System requirements
-- An updated version of Java 8 JRE or newer.
-- At least about 200 MB of free RAM
+- An updated version of **Java 8 JRE** or newer.
+- At least about **256 MB** of free RAM
