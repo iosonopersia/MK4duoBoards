@@ -4,7 +4,7 @@ A graphical tool to help MK4duo developers managing their **boards/ files**.
 <img src="https://raw.githubusercontent.com/iosonopersia/MK4DuoBoards/master/MK4DuoBoards/src/MK4DuoIcon_250x250.png"/>
 
 It's already capable of:
-- parsing any **boards/ file**
+- parsing any **MK4duo boards/ file**
 - saving boards data in a binary database
 - exporting boards data to the MK4duo C++ header file format (the same format as the **boards/ files**) in a coherent style
 - looking for the presence of duplicate values for different pins of the same type (digital/analog) in the same board.
