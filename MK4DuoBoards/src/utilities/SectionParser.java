@@ -54,9 +54,8 @@ public class SectionParser {
 		
 			if(defineToken.equals(Const.DEFINE) && boardNameToken.equals(Const.BOARD_NAME_TOKEN)){
 				//We've found the BOARD_NAME token!
-				boardNameString= SecureTokenizer.readToken(st);
-				//We remove the quotation marks (")
-				boardNameString= boardNameString.replace(Const.QUOTE, Const.EMPTY);
+				SecureTokenizer.readToken(st, Const.QUOTE);
+				boardNameString= SecureTokenizer.readToken(st, Const.QUOTE);
 				currentBoard.setName(boardNameString.trim());
 			}
 		}

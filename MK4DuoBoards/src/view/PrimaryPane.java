@@ -240,15 +240,23 @@ public class PrimaryPane extends BorderPane{
 		});
 		
 		boardList.getContextMenuRemoveBoard().setOnAction(event->{
-			boards.remove(boardList.getSelectionModel().getSelectedIndex());
+			if(showRemoveConfirmation(lang)){
+				boards.remove(boardList.getSelectionModel().getSelectedIndex());
+			}else{
+				showAbortedOperation(lang);
+			}
 		});
 		
 		boardList.getContextMenuDisableSelected().setOnAction(event->{
 			boardList.getSelectionModel().clearSelection();
 		});
 		
-		boardList.getContextMenuEmptyList().setOnAction(event->{
-			boards.clear();
+		boardList.getContextMenuRemoveEveryBoard().setOnAction(event->{
+			if(showRemoveConfirmation(lang)){
+				boards.clear();
+			}else{
+				showAbortedOperation(lang);
+			}
 		});
 		
 		boardList.getContextMenuPinCheck().setOnAction(event->{
@@ -273,7 +281,7 @@ public class PrimaryPane extends BorderPane{
 		
 		boardList.getContextMenuExportBoard().disableProperty().bind(boardList.getSelectionModel().selectedItemProperty().isNull());
 		boardList.getContextMenuRemoveBoard().disableProperty().bind(boardList.getSelectionModel().selectedItemProperty().isNull());
-		boardList.getContextMenuEmptyList().disableProperty().bind(Bindings.isEmpty(boardList.getItems()));
+		boardList.getContextMenuRemoveEveryBoard().disableProperty().bind(Bindings.isEmpty(boardList.getItems()));
 		boardList.getContextMenuSortBoards().disableProperty().bind(Bindings.isEmpty(boardList.getItems()));
 		boardList.getContextMenuDisableSelected().disableProperty().bind(boardList.getSelectionModel().selectedItemProperty().isNull());
 		boardList.getContextMenuPinCheck().disableProperty().bind(boardList.getSelectionModel().selectedItemProperty().isNull());
@@ -406,6 +414,24 @@ public class PrimaryPane extends BorderPane{
 		done.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		done.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 		done.showAndWait();
+	}
+	
+	private boolean showRemoveConfirmation(i18n lang) {
+		Alert alert=new Alert(AlertType.CONFIRMATION);
+		alert.initOwner(primaryStage);
+		alert.setTitle(lang.getString("ContextMenu.REMOVE_CONFIRM.TITLE"));
+		alert.setHeaderText(lang.getString("ContextMenu.REMOVE_CONFIRM.HEADER"));
+		alert.setContentText(lang.getString("ContextMenu.REMOVE_CONFIRM.CONTENT"));
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+		alert.getButtonTypes().setAll( ButtonType.YES, ButtonType.NO);
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+		alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
+		Optional<ButtonType> response= alert.showAndWait();
+		if(response != null && response.isPresent() && response.get().equals(ButtonType.YES)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	private void showInfoDialog(i18n lang) {

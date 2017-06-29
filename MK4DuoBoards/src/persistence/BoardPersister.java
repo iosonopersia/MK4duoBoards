@@ -119,8 +119,8 @@ public class BoardPersister{
 			
 			if(defineToken.equals(Const.DEFINE) && boardNameToken.equals(Const.BOARD_NAME_TOKEN)){
 				//We've found the BOARD_NAME token!
-				boardNameString= SecureTokenizer.readToken(st);
-				boardNameString= boardNameString.replace(Const.QUOTE, Const.EMPTY);
+				SecureTokenizer.readToken(st, Const.QUOTE);
+				boardNameString= SecureTokenizer.readToken(st, Const.QUOTE);
 				board.setName(boardNameString.trim());
 			}else if(defineToken.equals(Const.ENDIF)){
 				return;

@@ -17,7 +17,7 @@ public class BoardListView extends ListView<Board> {
 					 exportBoard,
 					 removeBoard,
 					 disableSelected,
-					 emptyList;
+					 removeEveryBoard;
 	
 	public BoardListView(DataManager model, i18n lang){
 		this.setMinWidth(200);
@@ -33,9 +33,9 @@ public class BoardListView extends ListView<Board> {
 		SeparatorMenuItem separatorMenuItem = new SeparatorMenuItem();
 		removeBoard= new MenuItem(lang.getString("ContextMenu.REMOVE_BOARD"));
 		disableSelected= new MenuItem(lang.getString("ContextMenu.DISABLE_SELECTED"));
-		emptyList= new MenuItem(lang.getString("ContextMenu.EMPTY_LIST"));
+		removeEveryBoard= new MenuItem(lang.getString("ContextMenu.EMPTY_LIST"));
 
-		contextMenu.getItems().addAll(newBoard, sortBoards, pinCheck, exportBoard, separatorMenuItem, disableSelected, removeBoard, emptyList);
+		contextMenu.getItems().addAll(newBoard, sortBoards, pinCheck, exportBoard, separatorMenuItem, disableSelected, removeBoard, removeEveryBoard);
 		
 		this.setContextMenu(contextMenu);
 	}
@@ -52,8 +52,8 @@ public class BoardListView extends ListView<Board> {
 		return this.removeBoard;
 	}
 	
-	public final MenuItem getContextMenuEmptyList(){
-		return this.emptyList;
+	public final MenuItem getContextMenuRemoveEveryBoard(){
+		return this.removeEveryBoard;
 	}
 
 	public final MenuItem getContextMenuDisableSelected() {
