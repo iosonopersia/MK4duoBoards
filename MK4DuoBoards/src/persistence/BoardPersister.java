@@ -15,11 +15,15 @@ import java.util.StringTokenizer;
 
 import model.Board;
 import model.Const;
-import model.Microcontroller;
 import model.Section;
+import utilities.SectionParser;
 import utilities.SecureTokenizer;
 
 public class BoardPersister{
+	
+/*****************************************************************************************************************************
+ * 													--INPUT--
+ ****************************************************************************************************************************/	
 	private Boolean recognisedPattern= false;
 	
 	public List<Board> parse(List<Path> fileNames) throws IOException{
@@ -32,7 +36,6 @@ public class BoardPersister{
 			currentBoard.setName(Const.UNDEFINED_NAME);
 			currentBoard.setFileName(file.getFileName().toString());
 			
-			//NOW WE RETRIEVE PIN VALUES DATA
 			String defineToken=Const.EMPTY, 
 					pinNameToken=Const.EMPTY,
 					pinValueToken=Const.EMPTY,
@@ -45,12 +48,12 @@ public class BoardPersister{
 				}
 				StringTokenizer st= new StringTokenizer(line);
 				
-				if(line.contains(Const.IFNDEF) && line.contains(Const.BOARD_NAME_TOKEN)){
+				//This detects both "#if DISABLED(BOARD_NAME)" and "#ifndef BOARD_NAME"
+				if(line.contains(Const.IF) && line.contains(Const.BOARD_NAME_TOKEN)){
 					consumeIfNDefBoardName(br, currentBoard);
 					continue;
 				}
 				
-				//With this simple check, we avoid reading pins defined in #if...#endif blocks
 				String initialToken= SecureTokenizer.readToken(st);
 				
 				if(initialToken.startsWith(Const.IF)){
@@ -59,7 +62,7 @@ public class BoardPersister{
 					continue;
 				}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_START)){
 					String sectionName= initialToken.substring(Const.MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS, initialToken.length());
-					parseMK4DuoSection(sectionName, br, currentBoard);
+					SectionParser.parseMK4DuoSection(sectionName, br, currentBoard);
 					recognisedPattern= true;
 					continue;
 				}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
@@ -104,89 +107,22 @@ public class BoardPersister{
 		return parsedBoards;
 	}
 	
-	private void parseMK4DuoSection(String sectionName, BufferedReader br, Board currentBoard) throws IOException {
-		if(sectionName.equals(Const.MK4DUOBOARDS_BOARD_NAME_SECTION)){
-			consumeIfNDefBoardName(br, currentBoard);
-		}else if(sectionName.equals(Const.MK4DUOBOARDS_CHIP_SECTION)){
-			consumeChipSection(br, currentBoard);
-		}else if(sectionName.equals(Const.MK4DUOBOARDS_SERVOMOTORS_SECTION)){
-			consumeServoMotorsSection(br, currentBoard);
-		}else if(sectionName.equals(Const.MK4DUOBOARDS_UNKNOWN_PINS_SECTION)){ 
-			consumeUnknownPinsSection(br, currentBoard);
-		}else if(sectionName.equals(Const.MK4DUOBOARDS_IF_BLOCKS_SECTION)){
-			consumeIfBlocksSection(br, currentBoard);
-		}
-		
-	}
-
-	private void consumeIfBlocksSection(BufferedReader br, Board currentBoard) throws IOException {
-		StringBuilder sb= new StringBuilder();
-		String line;
-		while((line=br.readLine())!=null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
-			sb.append(line);
-			sb.append(Const.EOL);
-		}
-		currentBoard.setIfBlocks(sb.toString());
-	}
-
-	private void consumeUnknownPinsSection(BufferedReader br, Board currentBoard) throws IOException {
-		StringBuilder sb= new StringBuilder();
-		String line;
-		while((line=br.readLine())!=null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
-			sb.append(line);
-			sb.append(Const.EOL);
-		}
-		currentBoard.setUnknownPins(sb.toString());
-		
-	}
-
-	private void consumeServoMotorsSection(BufferedReader br, Board currentBoard) throws IOException {
-		String line;
-		while((line=br.readLine())!=null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
-			StringTokenizer st= new StringTokenizer(line);
-			String defineToken= SecureTokenizer.readToken(st);
-			String pinNameToken= SecureTokenizer.readToken(st);
-			String pinValueToken= SecureTokenizer.readToken(st);
-			String pinComment= SecureTokenizer.readInlineCommentToken(st);
-			
-			if(defineToken.equals(Const.DEFINE)){
-				recognisedPattern=true;
-				String section= ConfigPersister.getSectionNameOf(pinNameToken);
-				if(section != null){
-					//When we find the first occurrence, we stop.
-					//Well,it should exist only 1 occurrence for every pin...
-					currentBoard.getPinByNameAndSection(pinNameToken, section).setValue(Integer.parseInt(pinValueToken));
-					currentBoard.getPinByNameAndSection(pinNameToken, section).setComment(pinComment);
-					
-				}
-			}
-		}
-		
-	}
-	
-	private void consumeChipSection(BufferedReader br, Board currentBoard) throws IOException {
-		String firstLine;
-		while((firstLine=br.readLine().trim())!=null){
-			if(firstLine.isEmpty()==false){
-				//We have found the first non-empty line after the SECTION_START token
-				break;
-			}
-		}
-		for(String chipName: ConfigPersister.getChipNames()){
-			Microcontroller chip= ConfigPersister.getChip(chipName);
-			if(chip.getCheckCode().startsWith(firstLine)){
-				currentBoard.setMicrocontroller(chip);
-			}
-		}
-		//We've already collected the information we needed.
-		//The remaining part of this section can be safely ignored
-		ignoreSection(br);
-	}
-
-	private void ignoreSection(BufferedReader br) throws IOException {
-		String line;
+	private void consumeIfNDefBoardName(BufferedReader br, Board board) throws IOException{
+		String line,
+			   defineToken= Const.EMPTY,
+			   boardNameToken= Const.EMPTY,
+			   boardNameString= Const.EMPTY;
 		while((line= br.readLine())!=null){
-			if(line.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
+			StringTokenizer st= new StringTokenizer(line);
+			defineToken= SecureTokenizer.readToken(st);
+			boardNameToken=SecureTokenizer.readToken(st);
+			
+			if(defineToken.equals(Const.DEFINE) && boardNameToken.equals(Const.BOARD_NAME_TOKEN)){
+				//We've found the BOARD_NAME token!
+				boardNameString= SecureTokenizer.readToken(st);
+				boardNameString= boardNameString.replace(Const.QUOTE, Const.EMPTY);
+				board.setName(boardNameString.trim());
+			}else if(defineToken.equals(Const.ENDIF)){
 				return;
 			}
 		}
@@ -219,28 +155,6 @@ public class BoardPersister{
 		}
 	}
 	
-	private void consumeIfNDefBoardName(BufferedReader br, Board board) throws IOException{
-		String line,
-			   defineToken= Const.EMPTY,
-			   boardNameToken= Const.EMPTY,
-			   boardNameString= Const.EMPTY;
-		while((line= br.readLine())!=null){
-			StringTokenizer st= new StringTokenizer(line);
-			defineToken= SecureTokenizer.readToken(st);
-			boardNameToken=SecureTokenizer.readToken(st);
-			
-			if(defineToken.equals(Const.DEFINE) && boardNameToken.equals(Const.BOARD_NAME_TOKEN)){
-				//We've found the BOARD_NAME token!
-				boardNameString= SecureTokenizer.readToken(st);
-				boardNameString= boardNameString.replace(Const.QUOTE, Const.EMPTY);
-				board.setName(boardNameString.trim());
-			}else if(defineToken.equals(Const.ENDIF)){
-				return;
-			}
-		}
-		
-	}
-	
 	private void consumeSingleLineComment(BufferedReader br, String lineAlreadyRead, Board board) throws IOException {
 		StringBuilder sb= new StringBuilder(lineAlreadyRead.trim());
 		sb.append(Const.EOL);
@@ -270,7 +184,10 @@ public class BoardPersister{
 		
 	}
 	
-
+/*****************************************************************************************************************************
+ * 														--OUTPUT--
+ ****************************************************************************************************************************/
+	
 	public void export(List<Board> data, Path rootDir) throws IOException {
 		if(Files.exists(rootDir)==false || Files.isDirectory(rootDir)==false){
 			throw new IOException();
@@ -289,7 +206,11 @@ public class BoardPersister{
 			writeBoardNameCode(board, fw);
 			fw.write(Const.EOL);
 			writeEverySectionExceptForServomotors(board, fw);
-			writeServomotors(board,fw);
+			//INFO: initially the indentation format was "\t"
+			//This was changed to a double space to accomodate
+			//the request of MagoKimbra, in the attempt to
+			//adopt the same format of the other MK4duo files.
+			writeServomotors(board, fw, Const.SPACE+Const.SPACE);
 			fw.write(Const.EOL);
 			writeUnknownPins(board, fw);
 			fw.write(Const.EOL);
@@ -356,7 +277,7 @@ public class BoardPersister{
 		}
 	}
 	
-	private void writeServomotors(Board board, BufferedWriter fw) throws IOException  {
+	private void writeServomotors(Board board, BufferedWriter fw, String indentation) throws IOException  {
 		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_SERVOMOTORS_SECTION);
 		fw.write(Const.EOL);
 		Integer indexOfServo= 0;
@@ -364,12 +285,12 @@ public class BoardPersister{
 			if(section.getName().startsWith(Const.SERVOS_SECTION_START)){
 				for(String pinName: section.getPins()){
 					for(int i=0; i< indexOfServo; ++i){
-						fw.write("\t");
+						fw.write(indentation);
 					}
 					fw.write(Const.IF_NUM_SERVOS_GREATER_THAN + Const.SPACE+ indexOfServo.toString());
 					fw.write(Const.EOL);
 					for(int i=0; i< indexOfServo+1; ++i){
-						fw.write("\t");
+						fw.write(indentation);
 					}
 					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue());
 					fw.write(Const.EOL);
@@ -380,7 +301,7 @@ public class BoardPersister{
 		indexOfServo--;
 		for(int i=indexOfServo; i>= 0; --i){
 			for(int j=0; j< i; ++j){
-				fw.write("\t");
+				fw.write(indentation);
 			}
 			fw.write(Const.ENDIF);
 			fw.write(Const.EOL);
