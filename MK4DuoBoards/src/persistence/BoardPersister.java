@@ -203,14 +203,14 @@ public class BoardPersister{
 			fw.write(Const.EOL);
 			writeKnownBoardToken(fw);
 			fw.write(Const.EOL);
-			writeBoardNameCode(board, fw);
-			fw.write(Const.EOL);
-			writeEverySectionExceptForServomotors(board, fw);
 			//INFO: initially the indentation format was "\t"
 			//This was changed to a double space to accomodate
 			//the request of MagoKimbra, in the attempt to
 			//adopt the same format of the other MK4duo files.
-			writeServomotors(board, fw, Const.SPACE+Const.SPACE);
+			writeBoardNameCode(board, fw, Const.DOUBLE_SPACE);
+			fw.write(Const.EOL);
+			writeEverySectionExceptForServomotors(board, fw);
+			writeServomotors(board, fw, Const.DOUBLE_SPACE);
 			fw.write(Const.EOL);
 			writeUnknownPins(board, fw);
 			fw.write(Const.EOL);
@@ -249,12 +249,12 @@ public class BoardPersister{
 		}
 	}
 	
-	private void writeBoardNameCode(Board board, BufferedWriter fw) throws IOException  {
+	private void writeBoardNameCode(Board board, BufferedWriter fw, String indentation) throws IOException  {
 		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_BOARD_NAME_SECTION);
 		fw.write(Const.EOL);
 		fw.write(Const.IF+Const.SPACE+Const.DISABLED+"("+Const.BOARD_NAME_TOKEN+")");
 		fw.write(Const.EOL);
-		fw.write(Const.TAB+Const.DEFINE+Const.SPACE+Const.BOARD_NAME_TOKEN+Const.SPACE+Const.QUOTE+board.getName()+Const.QUOTE);
+		fw.write(indentation+Const.DEFINE+Const.SPACE+Const.BOARD_NAME_TOKEN+Const.SPACE+Const.QUOTE+board.getName()+Const.QUOTE);
 		fw.write(Const.EOL);
 		fw.write(Const.ENDIF);
 		fw.write(Const.EOL);

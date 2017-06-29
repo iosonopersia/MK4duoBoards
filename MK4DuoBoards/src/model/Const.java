@@ -38,7 +38,8 @@ public class Const {
 								EOL="\n",
 							    EMPTY="",
 							    SPACE=" ",
-							    TAB="\t",
+							    DOUBLE_SPACE= "  ",
+							    TAB="\t", //Actually not used!!! It was replaced by DOUBLE_SPACE... (See BoardPersister::export)
 							    QUOTE= "\"",
 							    
 							    //C++ HEADER FILE TOKENS
