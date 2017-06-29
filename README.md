@@ -27,4 +27,4 @@ It's already capable of:
 
 ## System requirements
 - An updated version of **Java 8 JRE** or newer.
-- At least about 256 MB of free RAM
+- At least about **256 MB** of free RAM
