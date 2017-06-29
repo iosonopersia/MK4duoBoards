@@ -26,5 +26,5 @@ It's already capable of:
 - ~~After loading data from **boards/ files**, the application window suddenly becomes unresizable. It seems like a JavaFX bug, but I'll check my code again and again!~~ **This issue now seems to be solved. Please tell me in case you experience it!**
 
 ## System requirements
-- An updated version of Java 8 JRE or newer.
-- At least about 200 MB of free RAM
+- An updated version of **Java 8 JRE** or newer.
+- At least about 256 MB of free RAM
