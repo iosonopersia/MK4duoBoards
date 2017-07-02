@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -46,9 +47,9 @@ public class DataManager{
 		setLastDirFiles(rootDir);
 	}
 	
-	public void importFromFiles(List<Path> headerFiles) throws ClassNotFoundException, NumberFormatException, IOException {
-		this.boardList= boardPersister.parse(headerFiles);
-		setLastDirFiles(headerFiles.get(0).getParent());
+	public void importFromFiles(List<File> files){
+		this.boardList= boardPersister.parse(files);
+		setLastDirFiles(files.get(0).toPath().getParent());
 	}
 	
 	

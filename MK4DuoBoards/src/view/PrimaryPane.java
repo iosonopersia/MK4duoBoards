@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import model.Board;
 import model.Const;
 import model.DataManager;
@@ -173,13 +172,11 @@ public class PrimaryPane extends BorderPane{
 				List<File> files= fc.showOpenMultipleDialog(primaryStage);
 				
 				if(files!=null && files.isEmpty()== false){
-					try {
-						model.importFromFiles(files.stream()
-								.map((File file)-> file.toPath())
-								.collect(Collectors.toList()));
-						boards.addAll(model.getBoards());
-					} catch (ClassNotFoundException | IOException e1) {
-						showError(lang);
+					model.importFromFiles(files);
+					boards.addAll(model.getBoards());
+					int numOfNonParsedFiles= files.size() - model.getBoards().size();
+					if(numOfNonParsedFiles > 0){
+						showErrorFileNotParsed(numOfNonParsedFiles, lang);
 					}
 				}
 			}
@@ -471,7 +468,17 @@ public class PrimaryPane extends BorderPane{
 		alert.showAndWait();
 	}
 	
-
+	private void showErrorFileNotParsed(int numOfNonParsedFiles, i18n lang) {
+		Alert alert=new Alert(AlertType.ERROR);
+		alert.initOwner(primaryStage);
+		alert.setTitle(lang.getString("Errors.FILE_NOT_PARSED.TITLE"));
+		alert.setHeaderText(lang.getString("Errors.FILE_NOT_PARSED.HEADER"));
+		alert.setContentText(lang.getString("Errors.FILE_NOT_PARSED.CONTENT") + Const.SPACE + numOfNonParsedFiles);
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+		alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
+		alert.showAndWait();
+	}
+	
 	private void showRebootWarningDialog(i18n lang) {
 		Alert alert= new Alert(AlertType.WARNING);
 		alert.initOwner(primaryStage);

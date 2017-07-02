@@ -2,10 +2,9 @@ package persistence;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,82 +25,86 @@ public class BoardPersister{
  ****************************************************************************************************************************/	
 	private Boolean recognisedPattern= false;
 	
-	public List<Board> parse(List<Path> fileNames) throws IOException{
+	public List<Board> parse(List<File> files) {
 		List<Board> parsedBoards= new ArrayList<>();
 		
-		for(Path file : fileNames){
+		for(File file : files){
 			Board currentBoard=new Board();
-			Reader reader= new FileReader(file.toFile());
-			BufferedReader br=new BufferedReader(reader);
-			currentBoard.setName(Const.UNDEFINED_NAME);
-			currentBoard.setFileName(file.getFileName().toString());
-			
-			String defineToken=Const.EMPTY, 
-					pinNameToken=Const.EMPTY,
-					pinValueToken=Const.EMPTY,
-					pinComment=Const.EMPTY;
-			
-			String line;
-			while((line = br.readLine()) != null){
-				if(line.trim().equals(Const.EMPTY)){
-					continue;
-				}
-				StringTokenizer st= new StringTokenizer(line);
+			try (BufferedReader br= Files.newBufferedReader(file.toPath())) {
+				currentBoard.setName(Const.UNDEFINED_NAME);
+				currentBoard.setFileName(file.toPath().getFileName().toString());
 				
-				//This detects both "#if DISABLED(BOARD_NAME)" and "#ifndef BOARD_NAME"
-				if(line.contains(Const.IF) && line.contains(Const.BOARD_NAME_TOKEN)){
-					consumeIfNDefBoardName(br, currentBoard);
-					continue;
-				}
+				String defineToken=Const.EMPTY, 
+						pinNameToken=Const.EMPTY,
+						pinValueToken=Const.EMPTY,
+						pinComment=Const.EMPTY;
 				
-				String initialToken= SecureTokenizer.readToken(st);
-				
-				if(initialToken.startsWith(Const.IF)){
-					consumeIfBlock(br, line, currentBoard);
-					recognisedPattern=true;
-					continue;
-				}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_START)){
-					String sectionName= initialToken.substring(Const.MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS, initialToken.length());
-					SectionParser.parseMK4DuoSection(sectionName, br, currentBoard);
-					recognisedPattern= true;
-					continue;
-				}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
-					continue;
-				}else if(initialToken.startsWith(Const.SINGLE_LINE_COMM_START)){
-					consumeSingleLineComment(br, line, currentBoard);
-					recognisedPattern=true;
-					continue;
-				}else if(initialToken.startsWith(Const.MUL_LINES_COMM_START)){
-					consumeMultipleLineComment(br, line, currentBoard);
-					recognisedPattern=true;
-					continue;
-				}else{
-					defineToken= initialToken;
-					pinNameToken= SecureTokenizer.readToken(st);					
-					pinValueToken= SecureTokenizer.readToken(st);
-					pinComment= SecureTokenizer.readInlineCommentToken(st);
+				String line;
+				while((line = br.readLine()) != null){
+					if(line.trim().equals(Const.EMPTY)){
+						continue;
+					}
+					StringTokenizer st= new StringTokenizer(line);
 					
-					if(defineToken.equals(Const.DEFINE)){
+					//This detects both "#if DISABLED(BOARD_NAME)" and "#ifndef BOARD_NAME"
+					if(line.contains(Const.IF) && line.contains(Const.BOARD_NAME_TOKEN)){
+						consumeIfNDefBoardName(br, currentBoard);
+						continue;
+					}
+					
+					String initialToken= SecureTokenizer.readToken(st);
+					
+					if(initialToken.startsWith(Const.IF)){
+						consumeIfBlock(br, line, currentBoard);
 						recognisedPattern=true;
-						String section= ConfigPersister.getSectionNameOf(pinNameToken);
-						if(section != null){
-							//When we find the first occurrence, we stop.
-							//Well,it should exist only 1 occurrence for every pin...
-							currentBoard.getPinByNameAndSection(pinNameToken, section).setValue(Integer.parseInt(pinValueToken));
-							currentBoard.getPinByNameAndSection(pinNameToken, section).setComment(pinComment);
-						}else if(pinNameToken.equals(Const.BOARD_NAME_TOKEN)==false && pinNameToken.equals(Const.KNOWN_BOARD_TOKEN)==false){
-							//UnknownPin!!!
-							currentBoard.setUnknownPins(currentBoard.getUnknownPins()+line.trim()+Const.EOL);
+						continue;
+					}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_START)){
+						String sectionName= initialToken.substring(Const.MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS, initialToken.length());
+						SectionParser.parseMK4DuoSection(sectionName, br, currentBoard);
+						recognisedPattern= true;
+						continue;
+					}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
+						continue;
+					}else if(initialToken.startsWith(Const.SINGLE_LINE_COMM_START)){
+						consumeSingleLineComment(br, line, currentBoard);
+						recognisedPattern=true;
+						continue;
+					}else if(initialToken.startsWith(Const.MUL_LINES_COMM_START)){
+						consumeMultipleLineComment(br, line, currentBoard);
+						recognisedPattern=true;
+						continue;
+					}else{
+						defineToken= initialToken;
+						pinNameToken= SecureTokenizer.readToken(st);					
+						pinValueToken= SecureTokenizer.readToken(st);
+						pinComment= SecureTokenizer.readInlineCommentToken(st);
+						
+						if(defineToken.equals(Const.DEFINE)){
+							recognisedPattern=true;
+							String section= ConfigPersister.getSectionNameOf(pinNameToken);
+							if(section != null){
+								//When we find the first occurrence, we stop.
+								//Well,it should exist only 1 occurrence for every pin...
+								currentBoard.getPinByNameAndSection(pinNameToken, section).setValue(Integer.parseInt(pinValueToken));
+								currentBoard.getPinByNameAndSection(pinNameToken, section).setComment(pinComment);
+							}else if(pinNameToken.equals(Const.BOARD_NAME_TOKEN)==false && pinNameToken.equals(Const.KNOWN_BOARD_TOKEN)==false){
+								//UnknownPin!!!
+								currentBoard.setUnknownPins(currentBoard.getUnknownPins()+line.trim()+Const.EOL);
+							}
 						}
 					}
 				}
+				
+				if(this.recognisedPattern==true){
+					parsedBoards.add(currentBoard);
+					recognisedPattern=false;
+				}
+				
+			}catch (IOException e){
+				//Something went wrong with this file...
+				//The best thing to do is continue with the remaining files until we have finished them.
+				continue;
 			}
-			
-			if(this.recognisedPattern==true){
-				parsedBoards.add(currentBoard);
-			}
-			recognisedPattern=false;
-			br.close();
 		}
 		
 		return parsedBoards;
