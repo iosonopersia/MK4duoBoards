@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="model/Pins.java|model/SimpleSection.java|model/SectionEnum.java|model/PinEnum.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/opt/java/64/jre1.8.0_131/lib/ext/jfxrt.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
