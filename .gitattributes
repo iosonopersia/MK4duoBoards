@@ -1,0 +1,4 @@
+MK4duoBoards/**/*.java linguist-language=Java
+MK4duoBoards/**/*.class linguist-language=Java
+MK4duoBoards/**/*.jar linguist-language=Java
+ConfigFiles/**/*.txt linguist-language=Text
