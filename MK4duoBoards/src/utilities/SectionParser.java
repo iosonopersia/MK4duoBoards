@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 import model.Board;
-import model.Const;
 import model.Microcontroller;
 import persistence.ConfigPersister;
 
@@ -62,22 +61,23 @@ public class SectionParser {
 	}
 	
 	private static void parseChipSection(BufferedReader br, Board currentBoard) throws IOException {
-		String firstLine;
-		while((firstLine=br.readLine().trim())!=null){
-			if(firstLine.isEmpty()==false){
-				//We have found the first non-empty line after the SECTION_START token
-				break;
+		StringBuilder parsedCheckCode= new StringBuilder();
+		String line= Const.EMPTY;
+		
+		while((line=br.readLine()) != null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
+			if(line.isEmpty()==false){
+				parsedCheckCode.append(line);
+				parsedCheckCode.append(Const.EOL);
+				
 			}
 		}
 		for(String chipName: ConfigPersister.getChipNames()){
 			Microcontroller chip= ConfigPersister.getChip(chipName);
-			if(chip.getCheckCode().startsWith(firstLine)){
+			if(chip.getCheckCode().equals(parsedCheckCode.toString())){
 				currentBoard.setMicrocontroller(chip);
+				break;
 			}
 		}
-		//We've already collected the information we needed.
-		//The remaining part of this section can be safely ignored
-		ignoreSection(br);
 	}
 	
 	private static void parseServoMotorsSection(BufferedReader br, Board currentBoard) throws IOException {
@@ -123,12 +123,12 @@ public class SectionParser {
 		currentBoard.setIfBlocks(sb.toString());
 	}
 
-	private static void ignoreSection(BufferedReader br) throws IOException {
-		String line;
-		while((line= br.readLine())!=null){
-			if(line.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
-				return;
-			}
-		}
-	}
+//	private static void ignoreSection(BufferedReader br) throws IOException {
+//		String line;
+//		while((line= br.readLine())!=null){
+//			if(line.startsWith(Const.MK4DUOBOARDS_SECTION_END)){
+//				return;
+//			}
+//		}
+//	}
 }
