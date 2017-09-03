@@ -3,8 +3,6 @@ package utilities;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import model.Const;
-
 public class SecureTokenizer {
 	
 	public static String readToken(StringTokenizer st){

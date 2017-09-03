@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import model.Board;
-import model.Const;
 import model.DataManager;
 import model.Pin;
 import persistence.ConfigPersister;
+import utilities.Const;
 import utilities.PinChecker;
 import i18n.i18n;
 

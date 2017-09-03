@@ -1,74 +1,63 @@
 ###ATMega2560
 #if DISABLED(__AVR_ATmega2560__)
-    #error Oops!  Make sure you have 'Arduino Mega 2560' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Arduino Mega 2560' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ATMega1280_OR_ATMega2560
 #if DISABLED(__AVR_ATmega1280__) && DISABLED(__AVR_ATmega2560__)
-    #error Oops!  Make sure you have 'Arduino Mega' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Arduino Mega' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ATMega328P
 #if DISABLED(__AVR_ATmega328P__)
-    #error Oops!  Make sure you have 'Arduino Duemilanove w/ ATMega328' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Arduino Duemilanove w/ ATMega328' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ATMega644P_OR_ATMega1284P
 #if DISABLED(__AVR_ATmega644P__) && DISABLED(__AVR_ATmega1284P__)
-    #error Oops!  Make sure you have 'Sanguino' or 'Anet' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Sanguino' or 'Anet' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###AT90USB1286
 #if DISABLED(__AVR_AT90USB1286__)
-	#error Oops!  Make sure you have 'Teensy++ 2.0' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Teensy++ 2.0' selected from the 'Tools -> Boards' menu.
 #endif
 
 #if ENABLED(AT90USBxx_TEENSYPP_ASSIGNMENTS)  // use Teensyduino Teensy++2.0 pin assignments instead of Marlin traditional.
-	#error These Teensylu/Printrboard assignments depend on traditional Marlin assignments, not AT90USBxx_TEENSYPP_ASSIGNMENTS in fastio.h
+  #error These Teensylu/Printrboard assignments depend on traditional Marlin assignments, not AT90USBxx_TEENSYPP_ASSIGNMENTS in fastio.h
 #endif
-
 
 ###ATMega644_OR_ATMega644P_OR_ATMega1284P
 #if DISABLED(__AVR_ATmega644__) && DISABLED(__AVR_ATmega644P__) && DISABLED(__AVR_ATmega1284P__)
-    #error Oops!  Make sure you have 'Gen7' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Gen7' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ATMega644P
 #if DISABLED(__AVR_ATmega644P__)
-    #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ATMega644
 #if DISABLED(__AVR_ATmega644__)
-    #error Oops!  Make sure you have 'SanguinoA' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'SanguinoA' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ATMega644_OR_ATMega644P
 #if DISABLED(__AVR_ATmega644__) && DISABLED(__AVR_ATMega644P__)
-    #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu. (Final OMCA board)
+  #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu. (Final OMCA board)
 #endif
-
 
 ###ATMega1281
 #if DISABLED(__AVR_ATmega1281__)
-    #error Oops! Make sure you have 'Minitronics ' selected from the 'Tools -> Boards' menu.
+  #error Oops! Make sure you have 'Minitronics ' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ARDUINO_ARCH_SAM
 #if DISABLED(ARDUINO_ARCH_SAM)
-    #error Oops!  Make sure you have 'Arduino Due' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Arduino Due' selected from the 'Tools -> Boards' menu.
 #endif
-
 
 ###ALLIGATOR_ARCH_SAM
 #if DISABLED(ARDUINO_ARCH_SAM)
-    #error Oops!  Make sure you have 'Alligator 3D Printer Board' selected from the 'Tools -> Boards' menu.
+  #error Oops!  Make sure you have 'Alligator 3D Printer Board' selected from the 'Tools -> Boards' menu.
 #endif

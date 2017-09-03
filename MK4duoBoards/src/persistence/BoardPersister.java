@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import model.Board;
-import model.Const;
 import model.Section;
+import utilities.Const;
 import utilities.SectionParser;
 import utilities.SecureTokenizer;
 

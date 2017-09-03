@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import persistence.ConfigPersister;
+import utilities.Const;
 
 public class Board implements Externalizable{
 	

@@ -22,9 +22,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javafx.application.Platform;
-import model.Const;
 import model.Microcontroller;
 import model.Section;
+import utilities.Const;
 import utilities.SecureTokenizer;
 
 public class ConfigPersister{

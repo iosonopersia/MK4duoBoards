@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Board;
-import model.Const;
 import model.Pin;
 
 
