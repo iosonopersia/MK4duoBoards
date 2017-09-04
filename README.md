@@ -16,7 +16,7 @@ It's already capable of:
 - Run it once and close it. It should now have created a folder inside your user directory (in Linux: _/home/<USER_NAME>/.MK4duoBoards/_, in Windows: _C:\\Users\\<USER_NAME>\\.MK4duoBoards\\_).
 - You need now to replace the files contained in that folder with the ones you can find in the ConfigFiles folder.
 - If you need to edit those files, please **[read this wiki page](https://github.com/iosonopersia/MK4duoBoards/wiki/Config-files-format)** before!!!
-- Run again the program: you should now be able to manage the MK4Duo **boards/ files** in a much simpler way!!!
+- Run again the program: you should now be able to manage the MK4duo **boards/ files** in a much simpler way!!!
 
 ## Known issues
 ### On Windows
