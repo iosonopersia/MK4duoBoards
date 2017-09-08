@@ -79,9 +79,9 @@ KILL_PIN
 DEBUG_PIN
 SUICIDE_PIN
 
+###SERVO_@ [digital] @@@ 0 3
+SERVO@_PIN
+
 ###LASER [digital]
 ORIG_LASER_PWR_PIN
 ORIG_LASER_PWM_PIN
-
-###SERVO_@ [digital] @@@ 0 3
-SERVO@_PIN
