@@ -84,8 +84,8 @@ public class BoardPersister{
 							String section= ConfigPersister.getSectionNameOf(pinNameToken);
 							if(section != null){
 								//When we find the first occurrence, we stop.
-								//Well,it should exist only 1 occurrence for every pin...
-								currentBoard.getPinByNameAndSection(pinNameToken, section).setValue(Integer.parseInt(pinValueToken));
+								//Well, it should exist only 1 occurrence for every pin...
+								currentBoard.setPinValueByNameAndSection(pinNameToken, section, pinValueToken);
 								currentBoard.getPinByNameAndSection(pinNameToken, section).setComment(pinComment);
 							}else if(pinNameToken.equals(Const.BOARD_NAME_TOKEN)==false && pinNameToken.equals(Const.KNOWN_BOARD_TOKEN)==false){
 								//UnknownPin!!!
@@ -272,7 +272,7 @@ public class BoardPersister{
 				fw.write(Const.MK4DUOBOARDS_SECTION_START+ section.getName());
 				fw.write(Const.EOL);
 				for(String pinName: section.getPins()){
-					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue().toString());
+					fw.write(board.getPinByNameAndSection(pinName, section.getName()).print());
 					fw.write(Const.EOL);
 				}
 				fw.write(Const.EOL);
@@ -295,7 +295,7 @@ public class BoardPersister{
 					for(int i=0; i< indexOfServo+1; ++i){
 						fw.write(indentation);
 					}
-					fw.write(Const.DEFINE+Const.SPACE+pinName+Const.SPACE+board.getPinByNameAndSection(pinName, section.getName()).getValue());
+					fw.write(board.getPinByNameAndSection(pinName, section.getName()).print());
 					fw.write(Const.EOL);
 					indexOfServo++;
 				}

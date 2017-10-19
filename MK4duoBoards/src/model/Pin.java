@@ -9,6 +9,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import persistence.ConfigPersister;
 import utilities.Const;
 
 public class Pin implements Externalizable{	
@@ -51,6 +52,16 @@ public class Pin implements Externalizable{
 		return this.section;
 	}
 	
+	public final String print() {
+		Integer noPinMacroValue= ConfigPersister.getInstance().getNoPinMacroValue();
+
+		if(this.getValue().compareTo(noPinMacroValue) == 0) {
+			String noPinMacroName= ConfigPersister.getInstance().getNoPinMacroName();
+			return String.format("%-35s%2s", Const.DEFINE+Const.SPACE+this.getName()+Const.SPACE, noPinMacroName);
+		}else {
+			return String.format("%-35s%2s", Const.DEFINE+Const.SPACE+this.getName()+Const.SPACE, this.getValue().toString());
+		}
+	}
 	//############################################################
 	//                        PROPERTIES
 	//############################################################

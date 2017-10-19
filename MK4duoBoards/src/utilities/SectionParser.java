@@ -94,7 +94,7 @@ public class SectionParser {
 				if(section != null){
 					//When we find the first occurrence, we stop.
 					//Well,it should exist only 1 occurrence for every pin...
-					currentBoard.getPinByNameAndSection(pinNameToken, section).setValue(Integer.parseInt(pinValueToken));
+					currentBoard.setPinValueByNameAndSection(pinNameToken, section, pinValueToken);
 					currentBoard.getPinByNameAndSection(pinNameToken, section).setComment(pinComment);
 					
 				}

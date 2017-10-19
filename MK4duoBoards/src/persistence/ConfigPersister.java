@@ -33,6 +33,10 @@ public class ConfigPersister{
 	
 	private  Locale locale;
 	private  Path lastDirFiles, lastDirDB;
+
+	private Integer noPinMacroValue;
+	private String noPinMacroName;
+	
 	private static List<Section> knownPins;
 	private static LinkedHashMap<String, Microcontroller> microcontrollers;
 	
@@ -57,6 +61,8 @@ public class ConfigPersister{
 			locale= new Locale("en", "US");
 			lastDirFiles= Paths.get(System.getProperty("user.home"));
 			lastDirDB= Paths.get(System.getProperty("user.home"));
+			noPinMacroName = Const.NO_PIN_MACRO_NAME_DEFAULT;
+			noPinMacroValue= Const.NO_PIN_MACRO_VALUE_DEFAULT;
 			knownPins= new ArrayList<>();
 			microcontrollers= new LinkedHashMap<>();
 		}
@@ -133,6 +139,14 @@ public class ConfigPersister{
 			else if(numOfTokens>=Const.NUM_OF_LASTDIR_DB_MINIMUM_TOKENS && firstToken.equals(Const.LASTDIR_DB_TOKEN)){
 				Path lastDir= Paths.get(SecureTokenizer.readFileNameWithSpaces(st));
 				lastDirDB= (Files.exists(lastDir) && Files.isDirectory(lastDir)) ? lastDir : Paths.get(System.getProperty("user.home"));
+			}
+			
+			else if(numOfTokens>=2 && firstToken.equals(Const.NO_PIN_MACRO_NAME_TOKEN)){
+				noPinMacroName= SecureTokenizer.readToken(st);
+			}
+			
+			else if(numOfTokens>=2 && firstToken.equals(Const.NO_PIN_MACRO_VALUE_TOKEN)){
+				noPinMacroValue= Integer.parseInt(SecureTokenizer.readToken(st));
 			}
 		}
 		br.close();
@@ -290,19 +304,36 @@ public class ConfigPersister{
 		Writer w= new FileWriter(configFile.toFile());
 		BufferedWriter writer= new BufferedWriter(w);
 		
+		// Locale
 		writer.write(Const.LOCALE_TOKEN);
 		writer.write(Const.SPACE);
 		writer.write(locale.getLanguage());
 		writer.write(Const.SPACE);
 		writer.write(locale.getCountry());
 		writer.write(Const.EOL);
+		
+		// Last Dir Files
 		writer.write(Const.LASTDIR_FILES_TOKEN);
 		writer.write(Const.SPACE);
 		writer.write(lastDirFiles.toAbsolutePath().toString());
 		writer.write(Const.EOL);
+		
+		// Last Dir DB
 		writer.write(Const.LASTDIR_DB_TOKEN);
 		writer.write(Const.SPACE);
 		writer.write(lastDirDB.toAbsolutePath().toString());
+		writer.write(Const.EOL);
+		
+		// NoPinMacroName
+		writer.write(Const.NO_PIN_MACRO_NAME_TOKEN);
+		writer.write(Const.SPACE);
+		writer.write(noPinMacroName);
+		writer.write(Const.EOL);
+		
+		// NoPinMacroValue
+		writer.write(Const.NO_PIN_MACRO_VALUE_TOKEN);
+		writer.write(Const.SPACE);
+		writer.write(noPinMacroValue.toString());
 		writer.write(Const.EOL);
 		
 		writer.flush();
@@ -331,6 +362,14 @@ public class ConfigPersister{
 
 	public void setLastDirDB(Path lastDirDB) {
 		this.lastDirDB = lastDirDB;
+	}
+	
+	public final String getNoPinMacroName() {
+		return noPinMacroName;
+	}
+	
+	public final Integer getNoPinMacroValue() {
+		return noPinMacroValue;
 	}
 	
 	public final static List<Section> getKnownPins() {

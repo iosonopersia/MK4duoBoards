@@ -20,6 +20,7 @@ public class Const {
 								MK4DUOBOARDS_UNKNOWN_PINS_SECTION= "UNKNOWN_PINS",
 								MK4DUOBOARDS_IF_BLOCKS_SECTION= "IF_BLOCKS",
 								IF_NUM_SERVOS_GREATER_THAN= "#if NUM_SERVOS >",
+								NO_PIN_MACRO_NAME_DEFAULT= "NOPIN",
 								
 							    //CONFIGPERSISTER
 							    CONFIG_DIR= ".MK4duoBoards",
@@ -28,7 +29,9 @@ public class Const {
 							    MICROCONTROLLERS_FILE= "microcontrollers.txt",
 							    LOCALE_TOKEN= "Locale:",
 							    LASTDIR_FILES_TOKEN= "LastDirFiles:",
-							    LASTDIR_DB_TOKEN= "LastDirDB:",	
+							    LASTDIR_DB_TOKEN= "LastDirDB:",
+							    NO_PIN_MACRO_NAME_TOKEN= "NoPinMacroName:",
+							    NO_PIN_MACRO_VALUE_TOKEN= "NoPinMacroValue:",
 							    START_TOKEN_PREFIX = "###",
 					    		IS_ANALOG_TOKEN= "[analog]",
 								ENUM_TOKEN_START= "@@@",
@@ -60,7 +63,9 @@ public class Const {
 								NUM_OF_LASTDIR_FILES_MINIMUM_TOKENS= 2,
 								NUM_OF_LASTDIR_DB_MINIMUM_TOKENS= 2,
 								NUM_OF_CHIP_START_TOKENS= 1,
+								NUM_OF_NO_PIN_MACRO_TOKENS= 1,
 								START_TOKEN_PREFIX_NUM_OF_CHARS = 3,
+								NO_PIN_MACRO_VALUE_DEFAULT= -1,
 								
 								//BOARDPERSISTER
 								MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS= 5;
@@ -68,5 +73,6 @@ public class Const {
 	public static final String APP_NAME = "MK4duoBoards";
 
 	public static final String GITHUB_URL = "https://github.com/iosonopersia/MK4duoBoards";
+
 
 }

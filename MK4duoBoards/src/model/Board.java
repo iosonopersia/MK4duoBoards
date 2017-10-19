@@ -52,6 +52,16 @@ public class Board implements Externalizable{
 		return null;
 	}
 	
+	public void setPinValueByNameAndSection(String name, String section, String token){
+		Integer noPinMacroValue= ConfigPersister.getInstance().getNoPinMacroValue();
+		String noPinMacroName= ConfigPersister.getInstance().getNoPinMacroName();
+		
+		if(token.equals(noPinMacroName))
+			this.getPinByNameAndSection(name, section).setValue(noPinMacroValue);
+		else
+			this.getPinByNameAndSection(name, section).setValue(Integer.parseInt(token));
+	}
+	
 	//############################################################
 	//                        PROPERTIES
 	//############################################################
