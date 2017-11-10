@@ -59,7 +59,7 @@ public class BoardPersister{
 						recognisedPattern=true;
 						continue;
 					}else if(initialToken.startsWith(Const.MK4DUOBOARDS_SECTION_START)){
-						String sectionName= initialToken.substring(Const.MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS, initialToken.length());
+						String sectionName= initialToken.substring(Const.MK4DUOBOARDS_SECTION_START.length(), initialToken.length());
 						SectionParser.parseMK4DuoSection(sectionName, br, currentBoard);
 						recognisedPattern= true;
 						continue;

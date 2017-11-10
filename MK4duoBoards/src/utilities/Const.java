@@ -63,11 +63,7 @@ public class Const {
 								NUM_OF_LASTDIR_DB_MINIMUM_TOKENS= 2,
 								NUM_OF_CHIP_START_TOKENS= 1,
 								NUM_OF_NO_PIN_MACRO_TOKENS= 1,
-								START_TOKEN_PREFIX_NUM_OF_CHARS = 3,
-								NO_PIN_MACRO_VALUE_DEFAULT= -1,
-								
-								//BOARDPERSISTER
-								MK4DUOBOARDS_SECTION_START_NUM_OF_CHARS= 5;
+								NO_PIN_MACRO_VALUE_DEFAULT= -1;
 
 	public static final String APP_NAME = "MK4duoBoards";
 

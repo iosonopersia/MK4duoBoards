@@ -175,7 +175,7 @@ public class ConfigPersister{
 			String firstToken= SecureTokenizer.readToken(st);
 			
 			if(firstToken.startsWith(Const.START_TOKEN_PREFIX)){
-				firstToken= firstToken.substring(Const.START_TOKEN_PREFIX_NUM_OF_CHARS, firstToken.length());
+				firstToken= firstToken.substring(Const.START_TOKEN_PREFIX.length(), firstToken.length());
 				
 				
 				if(firstToken==null || firstToken.equals(Const.EMPTY)){
@@ -246,7 +246,7 @@ public class ConfigPersister{
 			String firstToken= SecureTokenizer.readToken(st);
 			
 			if(firstToken.startsWith(Const.START_TOKEN_PREFIX) && st.countTokens()== Const.NUM_OF_CHIP_START_TOKENS -1){
-				firstToken= firstToken.substring(Const.START_TOKEN_PREFIX_NUM_OF_CHARS, firstToken.length());
+				firstToken= firstToken.substring(Const.START_TOKEN_PREFIX.length(), firstToken.length());
 				
 				if(firstToken==null || firstToken.equals(Const.EMPTY)){
 					br.close();
