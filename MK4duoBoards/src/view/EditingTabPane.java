@@ -9,7 +9,6 @@ public class EditingTabPane extends TabPane {
 	private MetadataTab metadataTab;
 	private MainPinsTab mainPinsTab;
 	private ExtrudersPinsTab extrudersPinsTab;
-	private ServosPinsTab servosPinsTab;
 	private UnknownPinsTab unknownPinsTab;
 	private IfBlocksTab ifBlocksTab;
 
@@ -19,11 +18,10 @@ public class EditingTabPane extends TabPane {
 		metadataTab= new MetadataTab(model, lang);
 		mainPinsTab= new MainPinsTab(model, lang);
 		extrudersPinsTab= new ExtrudersPinsTab(model, lang);
-		servosPinsTab= new ServosPinsTab(model, lang);
 		unknownPinsTab= new UnknownPinsTab(model, lang);
 		ifBlocksTab= new IfBlocksTab(model, lang);
 		
-		getTabs().addAll(metadataTab, mainPinsTab, extrudersPinsTab, servosPinsTab, unknownPinsTab, ifBlocksTab);
+		getTabs().addAll(metadataTab, mainPinsTab, extrudersPinsTab, unknownPinsTab, ifBlocksTab);
 	}
 	
 	public final MetadataTab getMetadataTab() {
@@ -36,10 +34,6 @@ public class EditingTabPane extends TabPane {
 	
 	public final ExtrudersPinsTab getExtrudersPinsTab() {
 		return extrudersPinsTab;
-	}
-	
-	public final ServosPinsTab getServosPinsTab() {
-		return servosPinsTab;
 	}
 	
 	public final UnknownPinsTab getUnknownPinsTab(){

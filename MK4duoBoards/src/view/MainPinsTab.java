@@ -42,8 +42,7 @@ public class MainPinsTab extends Tab {
 		everyTable= new HashMap<>();
 		
 		for(Section section: ConfigPersister.getKnownPins()){
-			if(section.getName().startsWith(Const.EXTRUDERS_SECTION_START)==false &&
-					section.getName().startsWith(Const.SERVOS_SECTION_START)==false){
+			if(section.getName().startsWith(Const.EXTRUDERS_SECTION_START)==false){
 				Label sectionTitle= new Label(section.getName());
 				sectionTitle.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 22));
 				tablesLayout.getChildren().add(sectionTitle);
@@ -106,8 +105,7 @@ public class MainPinsTab extends Tab {
 		for(Map.Entry<String, TableView<Pin>> t: getTables().entrySet()){
 			
 			FilteredList<Pin> pinsFiltered= new FilteredList<>(pins, pin-> pin.getSection().equals(t.getKey()) &&
-																		   pin.getSection().startsWith(Const.EXTRUDERS_SECTION_START)==false &&
-																		   pin.getSection().startsWith(Const.SERVOS_SECTION_START)==false);
+																		   pin.getSection().startsWith(Const.EXTRUDERS_SECTION_START)==false);
 			t.getValue().setItems(pinsFiltered);
 			
 		}

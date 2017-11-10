@@ -107,7 +107,6 @@ public class PrimaryPane extends BorderPane{
     			pins.addAll(newValue.getPinList());
     			editingTabs.getMainPinsTab().setItemsForEveryTable(pins);
     			editingTabs.getExtrudersPinsTab().setItemsForEveryTable(pins);
-    			editingTabs.getServosPinsTab().setItemsForEveryTable(pins);
     			
     		}else{
     			clearEditingTabsContent();

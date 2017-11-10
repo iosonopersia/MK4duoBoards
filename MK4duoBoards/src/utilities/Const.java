@@ -8,7 +8,6 @@ public class Const {
 	
 							    //BOARDPERSISTER
 								EXTRUDERS_SECTION_START= "EXTRUDER_",
-							    SERVOS_SECTION_START= "SERVO_",
 								BOARD_NAME_TOKEN= "BOARD_NAME",
 								KNOWN_BOARD_TOKEN= "KNOWN_BOARD",
 								DESCRIPTION_START= "/***",

@@ -212,8 +212,7 @@ public class BoardPersister{
 			//adopt the same format of the other MK4duo files.
 			writeBoardNameCode(board, fw, Const.DOUBLE_SPACE);
 			fw.write(Const.EOL);
-			writeEverySectionExceptForServomotors(board, fw);
-			writeServomotors(board, fw, Const.DOUBLE_SPACE);
+			writeEverySection(board, fw);
 			fw.write(Const.EOL);
 			writeUnknownPins(board, fw);
 			fw.write(Const.EOL);
@@ -265,10 +264,9 @@ public class BoardPersister{
 		fw.write(Const.EOL);
 	}
 	
-	private void writeEverySectionExceptForServomotors(Board board, BufferedWriter fw) throws IOException  {
+	private void writeEverySection(Board board, BufferedWriter fw) throws IOException  {
 		fw.write(Const.EOL);
 		for(Section section: ConfigPersister.getKnownPins()){
-			if(section.getName().startsWith(Const.SERVOS_SECTION_START)==false){
 				fw.write(Const.MK4DUOBOARDS_SECTION_START+ section.getName());
 				fw.write(Const.EOL);
 				for(String pinName: section.getPins()){
@@ -276,42 +274,41 @@ public class BoardPersister{
 					fw.write(Const.EOL);
 				}
 				fw.write(Const.EOL);
-			}
 		}
 	}
 	
-	private void writeServomotors(Board board, BufferedWriter fw, String indentation) throws IOException  {
-		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_SERVOMOTORS_SECTION);
-		fw.write(Const.EOL);
-		Integer indexOfServo= 0;
-		for(Section section: ConfigPersister.getKnownPins()){
-			if(section.getName().startsWith(Const.SERVOS_SECTION_START)){
-				for(String pinName: section.getPins()){
-					for(int i=0; i< indexOfServo; ++i){
-						fw.write(indentation);
-					}
-					fw.write(Const.IF_NUM_SERVOS_GREATER_THAN + Const.SPACE+ indexOfServo.toString());
-					fw.write(Const.EOL);
-					for(int i=0; i< indexOfServo+1; ++i){
-						fw.write(indentation);
-					}
-					fw.write(board.getPinByNameAndSection(pinName, section.getName()).print());
-					fw.write(Const.EOL);
-					indexOfServo++;
-				}
-			}
-		}
-		indexOfServo--;
-		for(int i=indexOfServo; i>= 0; --i){
-			for(int j=0; j< i; ++j){
-				fw.write(indentation);
-			}
-			fw.write(Const.ENDIF);
-			fw.write(Const.EOL);
-		}
-		fw.write(Const.MK4DUOBOARDS_SECTION_END);
-		fw.write(Const.EOL);
-	}
+//	private void writeServomotors(Board board, BufferedWriter fw, String indentation) throws IOException  {
+//		fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_SERVOMOTORS_SECTION);
+//		fw.write(Const.EOL);
+//		Integer indexOfServo= 0;
+//		for(Section section: ConfigPersister.getKnownPins()){
+//			if(section.getName().startsWith(Const.SERVOS_SECTION_START)){
+//				for(String pinName: section.getPins()){
+//					for(int i=0; i< indexOfServo; ++i){
+//						fw.write(indentation);
+//					}
+//					fw.write(Const.IF_NUM_SERVOS_GREATER_THAN + Const.SPACE+ indexOfServo.toString());
+//					fw.write(Const.EOL);
+//					for(int i=0; i< indexOfServo+1; ++i){
+//						fw.write(indentation);
+//					}
+//					fw.write(board.getPinByNameAndSection(pinName, section.getName()).print());
+//					fw.write(Const.EOL);
+//					indexOfServo++;
+//				}
+//			}
+//		}
+//		indexOfServo--;
+//		for(int i=indexOfServo; i>= 0; --i){
+//			for(int j=0; j< i; ++j){
+//				fw.write(indentation);
+//			}
+//			fw.write(Const.ENDIF);
+//			fw.write(Const.EOL);
+//		}
+//		fw.write(Const.MK4DUOBOARDS_SECTION_END);
+//		fw.write(Const.EOL);
+//	}
 	
 	private void writeUnknownPins(Board board, BufferedWriter fw) throws IOException  {
 		if(board.getUnknownPins().trim().isEmpty()==false){
