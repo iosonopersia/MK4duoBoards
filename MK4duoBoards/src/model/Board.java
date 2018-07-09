@@ -19,7 +19,7 @@ public class Board implements Externalizable{
 	private List<Pin> pinList;
 	
 	//Properties
-	private StringProperty name, fileName, description, unknownPins, ifBlocks;
+	private StringProperty name, fileName, description, unknownPins, ifBlocks, mbSetup;
 	private ObjectProperty<Microcontroller> microcontroller;
 	
 	public Board(){
@@ -37,6 +37,7 @@ public class Board implements Externalizable{
 		
 		setUnknownPins(Const.EMPTY);
 		setIfBlocks(Const.EMPTY);
+		setMBSetup(Const.EMPTY);
 	}
 	
 	public final List<Pin> getPinList() {
@@ -163,6 +164,23 @@ public class Board implements Externalizable{
 		microcontrollerProperty().set(microcontroller);
 	}
 
+	//------------------------------------------------------------
+	public final StringProperty MBSetupProperty() {
+		if(mbSetup== null){
+			mbSetup= new SimpleStringProperty(this, "mbSetup", Const.EMPTY);
+		}
+		return mbSetup;
+	}
+	
+	public String getMBSetup() {
+		return MBSetupProperty().get();
+	}
+
+	public void setMBSetup(String MB_SETUP) {
+		MBSetupProperty().set(MB_SETUP);
+	}
+		
+	//------------------------------------------------------------
 	
 	@Override
 	public String toString() {
@@ -182,6 +200,7 @@ public class Board implements Externalizable{
 		setMicrocontroller((Microcontroller) in.readObject());
 		setUnknownPins((String) in.readObject());
 		setIfBlocks((String) in.readObject());
+		setMBSetup((String) in.readObject());
 		
 		getPinList().clear();
 		int size= in.readInt();
@@ -198,6 +217,7 @@ public class Board implements Externalizable{
 		out.writeObject(getMicrocontroller());
 		out.writeObject(getUnknownPins());
 		out.writeObject(getIfBlocks());
+		out.writeObject(getMBSetup());
 		
 		out.writeInt(getPinList().size());
 		for(Pin p: getPinList()){

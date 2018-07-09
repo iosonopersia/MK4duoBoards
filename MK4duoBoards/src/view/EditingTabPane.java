@@ -11,6 +11,7 @@ public class EditingTabPane extends TabPane {
 	private ExtrudersPinsTab extrudersPinsTab;
 	private UnknownPinsTab unknownPinsTab;
 	private IfBlocksTab ifBlocksTab;
+	private MBSetupTab mbSetupTab;
 
 	public EditingTabPane(DataManager model, i18n lang){
 		setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
@@ -20,8 +21,9 @@ public class EditingTabPane extends TabPane {
 		extrudersPinsTab= new ExtrudersPinsTab(model, lang);
 		unknownPinsTab= new UnknownPinsTab(model, lang);
 		ifBlocksTab= new IfBlocksTab(model, lang);
+		mbSetupTab= new MBSetupTab(model, lang);
 		
-		getTabs().addAll(metadataTab, mainPinsTab, extrudersPinsTab, unknownPinsTab, ifBlocksTab);
+		getTabs().addAll(metadataTab, mainPinsTab, extrudersPinsTab, unknownPinsTab, ifBlocksTab, mbSetupTab);
 	}
 	
 	public final MetadataTab getMetadataTab() {
@@ -42,5 +44,9 @@ public class EditingTabPane extends TabPane {
 	
 	public final IfBlocksTab getIfBlocksTab() {
 		return ifBlocksTab;
+	}
+	
+	public final MBSetupTab getMBSetupTab() {
+		return this.mbSetupTab;
 	}
 }

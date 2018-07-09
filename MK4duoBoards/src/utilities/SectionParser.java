@@ -35,6 +35,8 @@ public class SectionParser {
 			parseUnknownPinsSection(br, currentBoard);
 		}else if(sectionName.equals(Const.MK4DUOBOARDS_IF_BLOCKS_SECTION)){
 			parseIfBlocksSection(br, currentBoard);
+		}else if(sectionName.equals(Const.MK4DUOBOARDS_MB_SETUP_SECTION)) {
+			parseMBSetupSection(br, currentBoard);
 		}
 		
 	}
@@ -123,6 +125,16 @@ public class SectionParser {
 		currentBoard.setIfBlocks(sb.toString());
 	}
 
+	private static void parseMBSetupSection(BufferedReader br, Board currentBoard) throws IOException {
+		StringBuilder sb= new StringBuilder();
+		String line;
+		while((line=br.readLine())!=null && line.startsWith(Const.MK4DUOBOARDS_SECTION_END)==false){
+			sb.append(line);
+			sb.append(Const.EOL);
+		}
+		currentBoard.setMBSetup(sb.toString());
+	}
+	
 //	private static void ignoreSection(BufferedReader br) throws IOException {
 //		String line;
 //		while((line= br.readLine())!=null){

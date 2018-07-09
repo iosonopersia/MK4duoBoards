@@ -217,6 +217,8 @@ public class BoardPersister{
 			writeUnknownPins(board, fw);
 			fw.write(Const.EOL);
 			writeIfBlocks(board, fw);
+			fw.write(Const.EOL);
+			writeMBSetup(board, fw);
 			
 			fw.flush();
 			fw.close();
@@ -329,6 +331,19 @@ public class BoardPersister{
 			fw.write(Const.EOL);
 			fw.write(board.getIfBlocks().trim());
 			if(board.getIfBlocks().trim().endsWith(Const.EOL)==false){
+				fw.write(Const.EOL);
+			}
+			fw.write(Const.MK4DUOBOARDS_SECTION_END);
+			fw.write(Const.EOL);
+		}
+	}
+	
+	private void writeMBSetup(Board board, BufferedWriter fw) throws IOException  {
+		if(board.getMBSetup().trim().isEmpty()==false){
+			fw.write(Const.MK4DUOBOARDS_SECTION_START+Const.MK4DUOBOARDS_MB_SETUP_SECTION);
+			fw.write(Const.EOL);
+			fw.write(board.getMBSetup().trim());
+			if(board.getMBSetup().trim().endsWith(Const.EOL)==false){
 				fw.write(Const.EOL);
 			}
 			fw.write(Const.MK4DUOBOARDS_SECTION_END);

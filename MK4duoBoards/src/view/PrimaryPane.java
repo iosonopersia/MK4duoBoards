@@ -95,6 +95,7 @@ public class PrimaryPane extends BorderPane{
     		if(newValue!=null){
     			editingTabs.getUnknownPinsTab().getUnknownPinsArea().setText(newValue.getUnknownPins());
     			editingTabs.getIfBlocksTab().getIfBlocksArea().setText(newValue.getIfBlocks());
+    			editingTabs.getMBSetupTab().getMBSetupArea().setText(newValue.getMBSetup());
     			if(newValue.getMicrocontroller().getName().equals(Const.UNDEFINED_MICROCONTROLLER)){
     				editingTabs.getMetadataTab().getMicrocontroller().getSelectionModel().selectFirst();
     			}else{
@@ -297,6 +298,15 @@ public class PrimaryPane extends BorderPane{
 			}
 		});
 		
+		editingTabs.getMBSetupTab().getMBSetupArea().textProperty().addListener((obj, oldValue, newValue)->{
+			if(boardList.getSelectionModel().getSelectedItem()!=null){
+				if(newValue==null)
+					boardList.getSelectionModel().getSelectedItem().setMBSetup("");
+				else
+					boardList.getSelectionModel().getSelectedItem().setMBSetup(newValue);
+			}
+		});
+		
 		editingTabs.getUnknownPinsTab().getUnknownPinsArea().textProperty().addListener((obj, oldValue, newValue)->{
 			if(boardList.getSelectionModel().getSelectedItem()!=null){
 				if(newValue==null)
@@ -345,6 +355,7 @@ public class PrimaryPane extends BorderPane{
 	private void clearEditingTabsContent() {
 		pins.clear();
 		editingTabs.getIfBlocksTab().getIfBlocksArea().setText("");
+		editingTabs.getMBSetupTab().getMBSetupArea().setText("");
 		editingTabs.getUnknownPinsTab().getUnknownPinsArea().setText("");
 		editingTabs.getMetadataTab().getBoardName().setText("");
 		editingTabs.getMetadataTab().getFileName().setText("");
