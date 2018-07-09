@@ -49,7 +49,7 @@ public class PrimaryPane extends BorderPane{
 	    boards= FXCollections.observableList(model.getBoards(), new Callback<Board, Observable[]>() {
 	        @Override
 	        public Observable[] call(Board b) {
-	            return new Observable[] {b.nameProperty(), b.fileNameProperty(), b.unknownPinsProperty(), b.ifBlocksProperty(), b.microcontrollerProperty()};
+	            return new Observable[] {b.nameProperty(), b.fileNameProperty(), b.unknownPinsProperty(), b.ifBlocksProperty(), b.microcontrollerProperty(), b.MBSetupProperty()};
 	        }
 	        
 	    });

@@ -94,7 +94,6 @@ public class Pin implements Externalizable{
 	}
 
 	public void setValue(Integer value) {
-	
 		this.valueProperty().set(value);
 	}
 	
